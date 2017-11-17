@@ -1,0 +1,23 @@
+<%-- any content can be specified here e.g.: --%>
+<%@ page pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+
+<h2>
+    <c:if test = "${curuser != null}">
+        <a href="notes">Notes</a> 
+        <a href="<c:url value='login?action=logout'/>">Logout</a>
+        <a href="account">Accounts</a>
+        
+        <c:if test = "${curuser.role.roleID == '1'}">
+            <a href="admin">Users</a>
+        </c:if>
+    </c:if>
+</h2>
+    
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    
