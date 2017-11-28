@@ -7,8 +7,8 @@
 <!-- the Compile on Save feature is turned off for the project. -->
 <!-- You can turn off the Compile on Save (or Deploy on Save) setting -->
 <!-- in the project's Project Properties dialog box.-->
-<project name="Ass3_NotesKeepr" default="default" basedir=".">
-    <description>Builds, tests, and runs the project Ass3_NotesKeepr.</description>
+<project name="FinalProject_734972" default="default" basedir=".">
+    <description>Builds, tests, and runs the project FinalProject_734972.</description>
     <import file="nbproject/build-impl.xml"/>
     <!--
 

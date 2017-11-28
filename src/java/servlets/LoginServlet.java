@@ -24,8 +24,6 @@ public class LoginServlet extends HttpServlet {
         if (request.getParameter("action") != null) {
 
             HttpSession session = request.getSession();
-          //  session.setAttribute("user", null);
-           // session.setAttribute("username", null);
             session.invalidate();
         }
 
