@@ -7,8 +7,9 @@
 </head>
     <body>
         <h1>Manage Users</h1>
-        <h2>Users</h2>
-
+        <br>
+        ${message}
+        <br>
         <table border="1">
             <tr>
                 <th>Username</th>
@@ -78,6 +79,6 @@
             </form>
         </c:if>
         <br>
-        ${message}
+        
     </body>
 </html>
