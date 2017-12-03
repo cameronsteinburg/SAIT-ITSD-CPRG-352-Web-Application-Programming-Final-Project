@@ -3,6 +3,7 @@ package businesslogic;
 import dataaccess.NoteDB;
 import dataaccess.NotesDBException;
 import dataaccess.UserDB;
+import domainmodel.Company;
 import domainmodel.Note;
 import domainmodel.Role;
 import domainmodel.User;
@@ -42,8 +43,8 @@ public class UserService {
         return userDB.delete(deletedUser);
     }
 
-    public int insert(String username, String password, String email, boolean active, String firstname, String lastname) throws Exception {
-        User user = new User(username, password, email, active, firstname, lastname);
+    public int insert(String username, String password, String email, boolean active, String firstname, String lastname, Company company) throws Exception {
+        User user = new User(username, password, email, active, firstname, lastname, company);
         Role role = new Role(2);  // default regular user role
         user.setRole(role);
         return userDB.insert(user);

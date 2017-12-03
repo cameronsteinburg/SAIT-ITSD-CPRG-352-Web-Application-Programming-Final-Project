@@ -1,7 +1,9 @@
 package servlets;
 
 import businesslogic.UserService;
+import dataaccess.CompanyDB;
 import dataaccess.UserDB;
+import domainmodel.Company;
 import domainmodel.User;
 import java.io.IOException;
 import java.util.List;
@@ -24,7 +26,7 @@ public class AdminServlet extends HttpServlet {
 
         if (action != null && action.equals("view")) {
             String selectedUsername = request.getParameter("selectedUsername");
-            
+
             try {
 
                 User user = us.get(selectedUsername);
@@ -57,13 +59,14 @@ public class AdminServlet extends HttpServlet {
         String email = request.getParameter("email");
         String firstname = request.getParameter("firstname");
         String lastname = request.getParameter("lastname");
+
         boolean active = request.getParameter("active") != null;
 
         UserService us = new UserService();
 
         try {
             if (action.equals("delete")) {
-                
+
                 String selectedUsername = request.getParameter("selectedUsername");
 
                 UserDB userdb = new UserDB();
@@ -106,9 +109,28 @@ public class AdminServlet extends HttpServlet {
             } else if (action.equals("edit")) {
                 us.update(username, password, email, active, firstname, lastname);
                 request.setAttribute("message", "Account Successfully Updated!");
-                
+
             } else if (action.equals("add")) {
-                us.insert(username, password, email, active, firstname, lastname);
+                
+                int companyID  = -1;
+                
+                try {
+                    companyID = Integer.parseInt(request.getParameter("selectCompany"));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                
+                CompanyDB cdb = new CompanyDB();
+                List<Company> comps = cdb.getAll();
+                Company newCompany = null;
+
+                for (int i = 0; i < comps.size(); i++) {
+                    if (companyID == comps.get(i).getCompanyID()) {
+                        newCompany = comps.get(i);
+                    }
+                }
+
+                us.insert(username, password, email, active, firstname, lastname, newCompany);
                 request.setAttribute("message", "Account Successfully Added!");
             }
         } catch (Exception ex) {

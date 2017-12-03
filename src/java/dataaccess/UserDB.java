@@ -46,6 +46,7 @@ public class UserDB {
     }
 
     public List<User> getAll() throws NotesDBException {
+        
         EntityManager em = DBUtil.getEmFactory().createEntityManager();
         
         try {
