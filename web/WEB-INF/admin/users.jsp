@@ -31,7 +31,7 @@
                     <td>${user.role.roleName}</td>
                     <td>
                         <ul>
-                            <c:forEach var="note" items="${user.noteList}">
+                            <c:forEach var="note" items="${user.noteCollection}">
                                 <li>${note.title}</li>
                                 </c:forEach>
                         </ul>
