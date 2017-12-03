@@ -8,6 +8,7 @@
     <br>
     ${message}
     <br>
+    <br>
     <table border="1">
         <tr>
             <th>Username</th>
@@ -62,10 +63,9 @@
             email: <input type="email" name="email"><br>
             company:
             <select name="selectCompany">
-                <option disabled selected value> -- select an option -- </option>
-                <option value="3">My Little Pony</option>
-                <option value="1"> SAIT</option>
-                <option value ="2">Star Trek</option>
+                <c:forEach var="comps" items="${comps}">
+                    <option value="${comps.companyID}">${comps.companyName}</option>
+                </c:forEach>
             </select><br>
             active: <input type="checkbox" name="active"><br>
             <input type="hidden" name="action" value="add">
@@ -81,9 +81,9 @@
             password: <input type="password" name="password" value="${selectedUser.password}"><br>
             email: <input type="email" name="email" value="${selectedUser.email}"><br>
             company: <select name="selectCompany">
-                <option value="3">My Little Pony</option>
-                <option value="1"> SAIT</option>
-                <option value ="2">Star Trek</option>
+                <c:forEach var="comps" items="${comps}">
+                    <option value="${comps.companyID}"${comps.companyID == selectedUser.company.companyID ? 'selected' : ''}>${comps.companyName}</option>
+                </c:forEach>
             </select><br>
             active: <input type="checkbox" name="active" ${selectedUser.active ? "checked" : ""}><br>
             <input type="hidden" name="action" value="edit">

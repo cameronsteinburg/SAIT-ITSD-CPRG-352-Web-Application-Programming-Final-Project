@@ -25,25 +25,37 @@ public class AdminServlet extends HttpServlet {
         String action = request.getParameter("action");
 
         if (action != null && action.equals("view")) {
+            
             String selectedUsername = request.getParameter("selectedUsername");
 
             try {
 
                 User user = us.get(selectedUsername);
-
                 request.setAttribute("selectedUser", user);
+                
             } catch (Exception ex) {
                 Logger.getLogger(AdminServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
+            request.setAttribute("message", "Edit User Below");
         }
+        
+        
+        List<Company> comps = null;
+        CompanyDB cdb = new CompanyDB();
+        comps = cdb.getAll();
+   
+        request.setAttribute("comps", comps);
 
         List<User> users = null;
+
         try {
             users = us.getAll();
         } catch (Exception ex) {
             Logger.getLogger(AdminServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
         request.setAttribute("users", users);
+        
         getServletContext().getRequestDispatcher("/WEB-INF/admin/users.jsp").forward(request, response);
         return;
     }
@@ -81,11 +93,15 @@ public class AdminServlet extends HttpServlet {
 
                     if (action != null && action.equals("view")) {
                         selectedUsername = request.getParameter("selectedUsername");
+                        
                         try {
 
                             User newuser = us.get(selectedUsername);
-
+                            
                             request.setAttribute("selectedUser", user);
+                            int id = newuser.getCompany().getCompanyID();
+                            request.setAttribute("oldCompanyID", id);
+                            
                         } catch (Exception ex) {
                             Logger.getLogger(AdminServlet.class.getName()).log(Level.SEVERE, null, ex);
                         }
@@ -109,7 +125,6 @@ public class AdminServlet extends HttpServlet {
             } else if (action.equals("edit")) {
                 
                 Company newCompany = CompanyDB.getCompanyFromIDString(request.getParameter("selectCompany"));
-                
                 us.update(username, password, email, active, firstname, lastname, newCompany);
                 request.setAttribute("message", "Account Successfully Updated!");
 
