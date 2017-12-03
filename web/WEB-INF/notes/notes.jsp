@@ -41,8 +41,8 @@
     <c:if test="${selectedNote == null}">
         <h3>Add Note</h3>
         <form action="notes" method="POST">
-            title: <input type="text" name="title"><br>
-            contents: <input type="text" name="contents"><br>
+            title: <input type="text" name="title" maxlength="30"><br>
+            contents: <input type="text" name="contents" maxlength="20000"><br>
             <input type="hidden" name="action" value="add">
             <input type="submit" value="Save">
         </form>
@@ -51,9 +51,9 @@
         <h3>Edit Note</h3>
         <form action="notes" method="POST">
             <input type="hidden" name="editor" value="${selectedNote.noteID}">
-            title: <input type="text" name="title" value="${selectedNote.title}"><br>
+            title: <input type="text" name="title" maxlength="30" value="${selectedNote.title}"><br>
             date: <input type="text" name="date" value="${selectedNote.dateCreated}"><br>
-            contents: <input type="text" name="contents" value="${selectedNote.contents}"><br>
+            contents: <input type="text" name="contents" maxlength="20000" value="${selectedNote.contents}"><br>
             <input type="hidden" name="action" value="edit">
             <input type="submit" value="Save">
         </form>
