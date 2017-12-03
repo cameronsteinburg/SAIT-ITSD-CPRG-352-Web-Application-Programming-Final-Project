@@ -1,15 +1,10 @@
 package businesslogic;
 
-import dataaccess.NoteDB;
-import dataaccess.NotesDBException;
 import dataaccess.UserDB;
 import domainmodel.Company;
-import domainmodel.Note;
 import domainmodel.Role;
 import domainmodel.User;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class UserService {
 

@@ -22,7 +22,9 @@
             <input type="submit" value="Login">
         </form>    
         <br>
+        <a href="register">Don't have an account? Register here</a>
+        <br>
+        <br>
         ${message}
-        
     </body>
 </html>

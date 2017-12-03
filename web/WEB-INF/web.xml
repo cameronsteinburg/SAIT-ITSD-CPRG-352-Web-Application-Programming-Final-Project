@@ -8,41 +8,26 @@
         <filter-name>AuthenticationFilter</filter-name>
         <filter-class>filters.AuthenticationFilter</filter-class>
     </filter>
-    
-    
-    
-    
-    
-    
     <filter-mapping>
         <filter-name>AccountFilter</filter-name>
         <servlet-name>AdminServlet</servlet-name>
     </filter-mapping>
-    
-     <filter-mapping>
+    <filter-mapping>
         <filter-name>AccountFilter</filter-name>
         <servlet-name>AccountServlet</servlet-name>
     </filter-mapping>
-    
     <filter-mapping>
         <filter-name>AccountFilter</filter-name>
         <servlet-name>NotesServlet</servlet-name>
     </filter-mapping>
-    
-    
-    
     <filter-mapping>
         <filter-name>AuthenticationFilter</filter-name>
         <servlet-name>AdminServlet</servlet-name>
     </filter-mapping>
-  
- 
-    
     <listener>
         <description>ServletContextListener</description>
         <listener-class>util.EMFListener</listener-class>
     </listener>
-    
     <servlet>
         <servlet-name>AdminServlet</servlet-name>
         <servlet-class>servlets.AdminServlet</servlet-class>
@@ -64,6 +49,10 @@
         <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
+    <servlet>
+        <servlet-name>RegisterServlet</servlet-name>
+        <servlet-class>servlets.RegisterServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>AdminServlet</servlet-name>
         <url-pattern>/admin</url-pattern>
@@ -83,6 +72,10 @@
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>/faces/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RegisterServlet</servlet-name>
+        <url-pattern>/register</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

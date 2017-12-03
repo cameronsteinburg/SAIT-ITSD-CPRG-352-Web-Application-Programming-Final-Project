@@ -67,7 +67,7 @@
                     <option value="${comps.companyID}">${comps.companyName}</option>
                 </c:forEach>
             </select><br>
-            active: <input type="checkbox" name="active"><br>
+            active?: <input type="checkbox" name="active"><br>
             <input type="hidden" name="action" value="add">
             <input type="submit" value="Save">
         </form>
@@ -85,7 +85,7 @@
                     <option value="${comps.companyID}"${comps.companyID == selectedUser.company.companyID ? 'selected' : ''}>${comps.companyName}</option>
                 </c:forEach>
             </select><br>
-            active: <input type="checkbox" name="active" ${selectedUser.active ? "checked" : ""}><br>
+            active?: <input type="checkbox" name="active" ${selectedUser.active ? "checked" : ""}><br>
             <input type="hidden" name="action" value="edit">
             <input type="submit" value="Save">
         </form>
