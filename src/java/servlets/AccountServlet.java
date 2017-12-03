@@ -1,6 +1,9 @@
 package servlets;
 
 import businesslogic.UserService;
+import dataaccess.CompanyDB;
+import dataaccess.UserDB;
+import domainmodel.Company;
 import domainmodel.User;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -17,18 +20,19 @@ public class AccountServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         HttpSession session = request.getSession();
-
         UserService us = new UserService();
-
         String selectedUsername = (String) session.getAttribute("username");
 
         try {
 
             User user = us.get(selectedUsername);
+            
             if (user.getActive() == false) {
-
+                
                 response.sendRedirect("login?logout");
+                
             } else if (user.getActive() == true) {
+                
                 request.setAttribute("selectedUser", user);
                 getServletContext().getRequestDispatcher("/WEB-INF/account/account.jsp").forward(request, response);
                 return;
@@ -51,27 +55,29 @@ public class AccountServlet extends HttpServlet {
         boolean active = request.getParameter("active") != null;
         
         
-
+        HttpSession session = request.getSession();
         UserService us = new UserService();
-
+        String selectedUsername = (String) session.getAttribute("username");
+        
         try {
-            //TODO NOT FINISHED FOR COMPANY LEL
-           // us.update(username, password, email, active, firstname, lastname);
+            
+            User user = us.get(selectedUsername);
+            us.update(selectedUsername, password, email, active, firstname, lastname, user.getCompany());
+ 
         } catch (Exception ex) {
             Logger.getLogger(AccountServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         try {
 
-            HttpSession session = request.getSession();
-
-            String selectedUsername = (String) session.getAttribute("username");
-
             User user = us.get(selectedUsername);
+            
             if (user.getActive() == false) {
-
+                
                 response.sendRedirect("login?logout");
+                
             } else if (user.getActive() == true) {
+                
                 request.setAttribute("selectedUser", user);
                 request.setAttribute("themessage", "Account Succesfully Updated!");
                 getServletContext().getRequestDispatcher("/WEB-INF/account/account.jsp").forward(request, response);
