@@ -49,11 +49,14 @@ public class AccountServlet extends HttpServlet {
         String firstname = request.getParameter("firstname");
         String lastname = request.getParameter("lastname");
         boolean active = request.getParameter("active") != null;
+        
+        
 
         UserService us = new UserService();
 
         try {
-            us.update(username, password, email, active, firstname, lastname);
+            //TODO NOT FINISHED FOR COMPANY LEL
+           // us.update(username, password, email, active, firstname, lastname);
         } catch (Exception ex) {
             Logger.getLogger(AccountServlet.class.getName()).log(Level.SEVERE, null, ex);
         }

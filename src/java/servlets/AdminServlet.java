@@ -107,29 +107,16 @@ public class AdminServlet extends HttpServlet {
                 request.setAttribute("message", "Account Successfully Deleted!");
 
             } else if (action.equals("edit")) {
-                us.update(username, password, email, active, firstname, lastname);
+                
+                Company newCompany = CompanyDB.getCompanyFromIDString(request.getParameter("selectCompany"));
+                
+                us.update(username, password, email, active, firstname, lastname, newCompany);
                 request.setAttribute("message", "Account Successfully Updated!");
 
             } else if (action.equals("add")) {
                 
-                int companyID  = -1;
+               Company newCompany = CompanyDB.getCompanyFromIDString(request.getParameter("selectCompany"));
                 
-                try {
-                    companyID = Integer.parseInt(request.getParameter("selectCompany"));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                
-                CompanyDB cdb = new CompanyDB();
-                List<Company> comps = cdb.getAll();
-                Company newCompany = null;
-
-                for (int i = 0; i < comps.size(); i++) {
-                    if (companyID == comps.get(i).getCompanyID()) {
-                        newCompany = comps.get(i);
-                    }
-                }
-
                 us.insert(username, password, email, active, firstname, lastname, newCompany);
                 request.setAttribute("message", "Account Successfully Added!");
             }

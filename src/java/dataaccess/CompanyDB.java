@@ -17,11 +17,11 @@ import javax.persistence.EntityManager;
  * @author 734972
  */
 public class CompanyDB {
-    
-    public List<Company> getAll()  {
-        
+
+    public List<Company> getAll() {
+
         EntityManager em = DBUtil.getEmFactory().createEntityManager();
-        
+
         try {
             List<Company> comps = em.createNamedQuery("Company.findAll", Company.class).getResultList();
             return comps;
@@ -32,5 +32,28 @@ public class CompanyDB {
         }
         return null;
     }
-    
+
+    public static Company getCompanyFromIDString(String id) {
+
+        int companyID = -1;
+
+        try {
+            companyID = Integer.parseInt(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        CompanyDB cdb = new CompanyDB();
+        List<Company> comps = cdb.getAll();
+        Company newCompany = null;
+
+        for (int i = 0; i < comps.size(); i++) {
+            if (companyID == comps.get(i).getCompanyID()) {
+                newCompany = comps.get(i);
+            }
+        }
+
+        return newCompany;
+    }
+
 }

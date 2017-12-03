@@ -27,13 +27,14 @@ public class UserService {
         return userDB.getAll();
     }
 
-    public int update(String username, String password, String email, boolean active, String firstname, String lastname) throws Exception {
+    public int update(String username, String password, String email, boolean active, String firstname, String lastname, Company company) throws Exception {
         User user = userDB.getUser(username);
         user.setPassword(password);
         user.setActive(active);
         user.setEmail(email);
         user.setFirstname(firstname);
         user.setLastname(lastname);
+        user.setCompany(company);
         return userDB.update(user);
     }
  

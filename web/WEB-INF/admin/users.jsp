@@ -1,7 +1,5 @@
 <%@include file="/WEB-INF/jspf/header.jspf" %>
 
-
-
 <title>Manage Users</title>
 
 </head>
@@ -82,6 +80,11 @@
             last name: <input type="text" name="lastname" value="${selectedUser.lastname}"><br>
             password: <input type="password" name="password" value="${selectedUser.password}"><br>
             email: <input type="email" name="email" value="${selectedUser.email}"><br>
+            company: <select name="selectCompany">
+                <option value="3">My Little Pony</option>
+                <option value="1"> SAIT</option>
+                <option value ="2">Star Trek</option>
+            </select><br>
             active: <input type="checkbox" name="active" ${selectedUser.active ? "checked" : ""}><br>
             <input type="hidden" name="action" value="edit">
             <input type="submit" value="Save">
