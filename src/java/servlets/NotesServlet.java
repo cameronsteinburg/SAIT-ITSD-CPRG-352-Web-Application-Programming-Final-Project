@@ -97,7 +97,7 @@ public class NotesServlet extends HttpServlet {
 
                 int selectedNotes = Integer.parseInt(request.getParameter("editor"));
 
-                List<Note> AuthenticateUserForNotes = user.getNoteList();
+                List<Note> AuthenticateUserForNotes = (List<Note>) user.getNoteCollection();
 
                 for (int i = 0; i < AuthenticateUserForNotes.size(); i++) {
                     

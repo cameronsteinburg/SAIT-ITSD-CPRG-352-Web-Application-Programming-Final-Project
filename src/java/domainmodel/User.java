@@ -6,6 +6,7 @@
 package domainmodel;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -23,7 +24,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author awarsyle
+ * @author 734972
  */
 @Entity
 @Table(name = "user")
@@ -36,7 +37,6 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "User.findByActive", query = "SELECT u FROM User u WHERE u.active = :active")
     , @NamedQuery(name = "User.findByFirstname", query = "SELECT u FROM User u WHERE u.firstname = :firstname")
     , @NamedQuery(name = "User.findByLastname", query = "SELECT u FROM User u WHERE u.lastname = :lastname")})
-
 public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -59,6 +59,11 @@ public class User implements Serializable {
     @Basic(optional = false)
     @Column(name = "Lastname")
     private String lastname;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
+    private Collection<Note> noteCollection;
+    @JoinColumn(name = "Company", referencedColumnName = "CompanyID")
+    @ManyToOne(optional = false)
+    private Company company;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
     private List<Note> noteList;
     @JoinColumn(name = "Role", referencedColumnName = "RoleID")
@@ -130,12 +135,20 @@ public class User implements Serializable {
     }
 
     @XmlTransient
-    public List<Note> getNoteList() {
-        return noteList;
+    public Collection<Note> getNoteCollection() {
+        return noteCollection;
     }
 
-    public void setNoteList(List<Note> noteList) {
-        this.noteList = noteList;
+    public void setNoteCollection(Collection<Note> noteCollection) {
+        this.noteCollection = noteCollection;
+    }
+
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
     }
 
     public Role getRole() {
@@ -165,6 +178,7 @@ public class User implements Serializable {
         }
         return true;
     }
+    
 
     @Override
     public String toString() {

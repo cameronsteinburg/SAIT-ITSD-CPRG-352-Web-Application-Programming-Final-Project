@@ -119,7 +119,7 @@ public class AdminServlet extends HttpServlet {
         try {
             users = us.getAll();
 
-            int number_notes = users.get(0).getNoteList().size();
+            int number_notes = users.get(0).getNoteCollection().size();
 
         } catch (Exception ex) {
             Logger.getLogger(AdminServlet.class.getName()).log(Level.SEVERE, null, ex);

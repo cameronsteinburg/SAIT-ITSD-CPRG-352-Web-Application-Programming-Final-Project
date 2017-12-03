@@ -18,6 +18,7 @@
                 <th>E-mail</th>
                 <th>Role</th>
                 <th>Note</th>
+                <th>Company</th>
                 <th>Delete</th>
                 <th>Edit</th>
             </tr>
@@ -35,6 +36,7 @@
                                 </c:forEach>
                         </ul>
                     </td>
+                    <td>${user.company.companyName}</td>
                     <td>
                         <form action="admin" method="post" >
                             <input type="submit" value="Delete">
