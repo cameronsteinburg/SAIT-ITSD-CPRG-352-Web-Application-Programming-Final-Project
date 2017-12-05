@@ -10,6 +10,7 @@ import javax.persistence.EntityTransaction;
 public class UserDB {
 
     public int insert(User user) throws NotesDBException {
+        
         EntityManager em = DBUtil.getEmFactory().createEntityManager();
         EntityTransaction trans = em.getTransaction();
         

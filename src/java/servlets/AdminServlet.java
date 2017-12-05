@@ -138,6 +138,12 @@ public class AdminServlet extends HttpServlet {
         } catch (Exception ex) {
             request.setAttribute("message", "Whoops.  Could not perform that action.");
         }
+        
+        CompanyDB dbc = new CompanyDB();
+        List<Company> comps = null;
+        comps = dbc.getAll();
+        
+        request.setAttribute("comps", comps);
 
         List<User> users = null;
         
