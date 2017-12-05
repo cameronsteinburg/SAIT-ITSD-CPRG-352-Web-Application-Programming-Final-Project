@@ -44,17 +44,20 @@ public class AuthenticationFilter implements Filter {
              return;
          }
         
-        if (session.getAttribute("username") != null && user.getActive() && user.getRole().getRoleID() == 1) {
+        if (session.getAttribute("username") != null && user.getActive() && user.getRole().getRoleID() == 1) { //admin
 
-            chain.doFilter(request, response); //ok go, youre good, go ahead
+            chain.doFilter(request, response);
             return;
             
-        } else if (session.getAttribute("username") != null && user.getActive() && user.getRole().getRoleID() == 2) {
+        } else if (session.getAttribute("username") != null && user.getActive() && user.getRole().getRoleID() == 2) { //regular pleb
             
-            ((HttpServletResponse) response).sendRedirect("notes"); //nonononono, not gewd
+            ((HttpServletResponse) response).sendRedirect("notes");
             return;
             
-        } 
+        } else if(session.getAttribute("username") != null && user.getActive() && user.getRole().getRoleID() == 3){ //company admin
+            ((HttpServletResponse) response).sendRedirect("companyAdmin");
+            return;
+        }
     }
 
     @Override

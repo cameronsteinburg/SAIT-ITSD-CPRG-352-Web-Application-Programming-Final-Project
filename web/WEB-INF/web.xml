@@ -53,6 +53,10 @@
         <servlet-name>RegisterServlet</servlet-name>
         <servlet-class>servlets.RegisterServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CompanyAdminServlet</servlet-name>
+        <servlet-class>servlets.CompanyAdminServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>AdminServlet</servlet-name>
         <url-pattern>/admin</url-pattern>
@@ -76,6 +80,10 @@
     <servlet-mapping>
         <servlet-name>RegisterServlet</servlet-name>
         <url-pattern>/register</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CompanyAdminServlet</servlet-name>
+        <url-pattern>/companyAdmin</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
