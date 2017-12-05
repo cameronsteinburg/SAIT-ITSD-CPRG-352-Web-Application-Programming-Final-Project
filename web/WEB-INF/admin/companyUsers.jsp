@@ -1,9 +1,9 @@
 <%@include file="/WEB-INF/jspf/header.jspf" %>
 
-<title>Company Users</title>
+<title>Manage Users</title>
 </head>
 <body>
-    <h1>Manage the Users in Your Company</h1>
+    <h1>Company Admin - Manage Users</h1>
     <br>
     <br>
     ${message}

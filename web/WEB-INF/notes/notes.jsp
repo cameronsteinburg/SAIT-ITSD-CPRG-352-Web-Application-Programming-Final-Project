@@ -5,7 +5,7 @@
 </head>
 <body>
 
-    <h1>Manage Notes</h1>
+    <h1>Manage Your Notes</h1>
     
     <ul>
         <c:forEach var="note" items="${notess}">

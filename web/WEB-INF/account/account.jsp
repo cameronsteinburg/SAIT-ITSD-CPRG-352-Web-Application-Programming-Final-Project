@@ -4,7 +4,7 @@
 </head>
 <body>
 
-    <h1>Manage Account</h1>
+    <h1>Manage Your Account</h1>
 
     <table border="1">
         <tr>

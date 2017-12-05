@@ -17,9 +17,9 @@
         <c:if test = "${curuser.role.roleID == '1'}">
             <a href="admin">Users</a>
             <a href="companies">Companies</a>
-        </c:if>
+        </c:if>  
             
-            <c:if test = "${curuser.role.roleID == '3'}">
+        <c:if test = "${curuser.role.roleID == '3'}">
             <a href="companyAdmin">Company Users</a>
         </c:if>
         

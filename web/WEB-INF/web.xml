@@ -57,6 +57,10 @@
         <servlet-name>CompanyAdminServlet</servlet-name>
         <servlet-class>servlets.CompanyAdminServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CompaniesServlet</servlet-name>
+        <servlet-class>servlets.CompaniesServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>AdminServlet</servlet-name>
         <url-pattern>/admin</url-pattern>
@@ -84,6 +88,10 @@
     <servlet-mapping>
         <servlet-name>CompanyAdminServlet</servlet-name>
         <url-pattern>/companyAdmin</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CompaniesServlet</servlet-name>
+        <url-pattern>/companies</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
