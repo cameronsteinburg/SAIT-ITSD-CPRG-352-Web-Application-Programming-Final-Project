@@ -1,16 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package dataaccess;
 
 import domainmodel.Company;
-import domainmodel.User;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 
 /**
  *
@@ -54,6 +49,45 @@ public class CompanyDB {
         }
 
         return newCompany;
+    }
+
+    public int update(Company company) throws Exception {
+        
+        EntityManager em = DBUtil.getEmFactory().createEntityManager();
+        EntityTransaction trans = em.getTransaction();
+        
+        try {
+            trans.begin();
+            em.merge(company);
+            trans.commit();
+            return 1;
+        } catch (Exception ex) {
+            trans.rollback();
+            Logger.getLogger(UserDB.class.getName()).log(Level.SEVERE, "Cannot update " + company.toString(), ex);
+            throw new Exception("Error updating user");
+        } finally {
+            em.close();
+        }
+    }
+
+    public int insert(Company company) throws Exception {
+        
+        
+        EntityManager em = DBUtil.getEmFactory().createEntityManager();
+        EntityTransaction trans = em.getTransaction();
+        
+        try {
+            trans.begin();
+            em.persist(company);
+            trans.commit();
+            return 1;
+        } catch (Exception ex) {
+            trans.rollback();
+            Logger.getLogger(UserDB.class.getName()).log(Level.SEVERE, "Cannot insert " + company.toString(), ex);
+            throw new Exception("Error inserting company");
+        } finally {
+            em.close();
+        }
     }
 
 }

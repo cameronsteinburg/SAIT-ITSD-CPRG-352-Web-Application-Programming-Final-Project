@@ -17,11 +17,11 @@
         <br>
         <br>
         <form action="register" method="POST">
-            username: <input type="text" name="username"><br>
-            first name: <input type="text" name="firstname"><br>
-            last name: <input type="text" name="lastname"><br>
-            password: <input type="password" name="password"><br>
-            email: <input type="email" name="email"><br>
+            username: <input type="text" name="username" maxlength="30"><br>
+            first name: <input type="text" name="firstname" maxlength="50"><br>
+            last name: <input type="text" name="lastname" maxlength="50"><br>
+            password: <input type="password" name="password" maxlength="30"><br>
+            email: <input type="email" name="email" maxlength="30"><br>
             company:
             <select name="selectCompany">
                 <c:forEach var="comps" items="${comps}">

@@ -23,9 +23,9 @@ public class NoteService {
     public List<Note> getAll() throws Exception {
         return noteDB.getAll();
     }
-    
+
     public int update(Note note, String title, String contents) {
-        
+
         NoteDB noteDB = new NoteDB();
 
         note.setTitle(title);
@@ -47,15 +47,11 @@ public class NoteService {
 
     public int insert(String title, String contents, String username) throws Exception {
 
- 
-       UserService us = new UserService();
-       User user = us.get(username);
-       
-       
-       
-       java.util.Date date = new java.util.Date();
+        UserService us = new UserService();
+        User user = us.get(username);
+        java.util.Date date = new java.util.Date();
         Note note = new Note(-1, date, title, contents);
-        
+
         note.setOwner(user);
         return noteDB.insert(note);
     }

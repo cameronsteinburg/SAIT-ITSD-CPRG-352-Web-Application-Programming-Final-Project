@@ -1,3 +1,8 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package filters;
 
 import dataaccess.NotesDBException;
@@ -16,56 +21,49 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author awarsyle
+ * @author 734972
  */
-public class AuthenticationFilter implements Filter {
-
-    private FilterConfig filterConfig = null;
+public class CompanyAdminFilter implements Filter{
+    
+        private FilterConfig filterConfig = null;
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-
-        HttpSession session = ((HttpServletRequest) request).getSession();
-
+       
+       HttpSession session = ((HttpServletRequest) request).getSession();
+        
         UserDB userdb = new UserDB();
 
         User user = new User();
-
+        
         try {
             user = userdb.getUser((String) session.getAttribute("username"));
-        } catch (NotesDBException ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
-
-        if (session.getAttribute("username") == null) {
-            ((HttpServletResponse) response).sendRedirect("login");
-            return;
-        }
-
-        if (session.getAttribute("username") != null && user.getActive() && user.getRole().getRoleID() == 1) { //admin
+        
+        if (session.getAttribute("username") != null && user.getActive() && user.getRole().getRoleID() != 1 && user.getRole().getRoleID() != 2) { 
 
             chain.doFilter(request, response);
             return;
-
-        } else if (session.getAttribute("username") != null && user.getActive() && user.getRole().getRoleID() == 2) { //regular pleb
-
+            
+        } else{
             ((HttpServletResponse) response).sendRedirect("notes");
             return;
-
-        } else {
-
-            ((HttpServletResponse) response).sendRedirect("companyAdmin");
-            return;
         }
+        
     }
-
+    
     @Override
     public void destroy() {
-    }
+   }
 
     @Override
     public void init(FilterConfig filterConfig) {
         this.filterConfig = filterConfig;
     }
 
+
+
+    
 }

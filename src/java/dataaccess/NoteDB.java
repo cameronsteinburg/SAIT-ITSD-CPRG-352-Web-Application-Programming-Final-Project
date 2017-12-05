@@ -16,10 +16,13 @@ public class NoteDB {
 
         EntityManager em = DBUtil.getEmFactory().createEntityManager();
         EntityTransaction trans = em.getTransaction();
-     
+        User owner = note.getOwner();
+        owner.getNoteCollection().add(note);
+        
         try {
             trans.begin();
             em.persist(note);
+            em.merge(owner);
             trans.commit();
             em.close();
             return 1;
@@ -33,11 +36,14 @@ public class NoteDB {
 
         EntityManager em = DBUtil.getEmFactory().createEntityManager();
         EntityTransaction trans = em.getTransaction();
+        User owner = notes.getOwner();
+        owner.getNoteCollection().remove(notes);
 
         try {
 
             trans.begin();
             em.remove(em.merge(notes));
+            em.merge(owner);
             trans.commit();
             return 1;
 

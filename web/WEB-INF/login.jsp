@@ -16,8 +16,8 @@
         <h1>Welcome to NotesKeepr, Please Login</h1>
         
         <form action="login" method="post">
-            username: <input type="text" name="username"><br>
-            password: <input type="password" name="password"><br>
+            username: <input type="text" name="username" maxlength="30"><br>
+            password: <input type="password" name="password" maxlength="30"><br>
             
             <input type="submit" value="Login">
         </form>    

@@ -58,7 +58,6 @@ public class NotesServlet extends HttpServlet {
             Logger.getLogger(NotesServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        // }
         getServletContext().getRequestDispatcher("/WEB-INF/notes/notes.jsp").forward(request, response);
         return;
     }
@@ -105,13 +104,13 @@ public class NotesServlet extends HttpServlet {
                         if (selectedNotes == AuthenticateUserForNotes.get(i).getNoteID()) {
 
                             ns.update(AuthenticateUserForNotes.get(i), request.getParameter("title"), request.getParameter("contents"));
-                            //session.setAttribute("currentUser", us.get((String) session.getAttribute("username")));
                             request.setAttribute("message", "Note Successfully Edited!");
                         }
                     }
 
                 } else if (action.equals("add")) {
                     ns.insert(title, contents, username);
+                    request.setAttribute("message", "Note Successfully Added!");
                 }
             } catch (Exception ex) {
                 request.setAttribute("message", "Whoops.  Could not perform that action.");
@@ -130,7 +129,8 @@ public class NotesServlet extends HttpServlet {
             Logger.getLogger(NotesServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        try { //reload
+        try {
+            
             List<Note> notess = ns.getAll();
 
             ArrayList<Note> acceptable = new ArrayList();

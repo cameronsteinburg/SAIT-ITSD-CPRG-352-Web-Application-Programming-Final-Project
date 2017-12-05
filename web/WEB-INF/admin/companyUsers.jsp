@@ -56,11 +56,11 @@
     <c:if test="${selectedUser == null}">
         <h3>Add User</h3>
         <form action="companyAdmin" method="POST">
-            username: <input type="text" name="username"><br>
-            first name: <input type="text" name="firstname"><br>
-            last name: <input type="text" name="lastname"><br>
-            password: <input type="password" name="password"><br>
-            email: <input type="email" name="email"><br>
+            username: <input type="text" name="username" maxlength="30"><br>
+            first name: <input type="text" name="firstname" maxlength="50"><br>
+            last name: <input type="text" name="lastname" maxlength="50"><br>
+            password: <input type="password" name="password" maxlength="30"><br>
+            email: <input type="email" name="email" maxlength="30"><br>
             company: ${thisCompany}<br>
             active?: <input type="checkbox" name="active"><br>
             <input type="hidden" name="action" value="add">
@@ -71,10 +71,10 @@
         <h3>Edit User</h3>
         <form action="companyAdmin" method="POST">
             username: <input type="text" name="username" value="${selectedUser.username}" readonly><br>
-            first name: <input type="text" name="firstname" value="${selectedUser.firstname}"><br>
-            last name: <input type="text" name="lastname" value="${selectedUser.lastname}"><br>
-            password: <input type="password" name="password" value="${selectedUser.password}"><br>
-            email: <input type="email" name="email" value="${selectedUser.email}"><br>
+            first name: <input type="text" name="firstname" value="${selectedUser.firstname}" maxlength="50"><br>
+            last name: <input type="text" name="lastname" value="${selectedUser.lastname}" maxlength="50"><br>
+            password: <input type="password" name="password" value="${selectedUser.password}" maxlength="30"><br>
+            email: <input type="email" name="email" value="${selectedUser.email}" maxlength="30"><br>
             company: ${thisCompany}<br>
             active?: <input type="checkbox" name="active" ${selectedUser.active ? "checked" : ""}><br>
             <input type="hidden" name="action" value="edit">

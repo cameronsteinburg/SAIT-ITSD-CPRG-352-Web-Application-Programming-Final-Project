@@ -3,9 +3,11 @@
 
 </head>
 <body>
-
     <h1>Manage Your Account</h1>
-
+    <br>
+    ${themessage}
+    <br>
+    <br>
     <table border="1">
         <tr>
             <td>Username</td>
@@ -30,7 +32,6 @@
                         </c:forEach>
                 </ul>
             </td>
-            
         </tr>
     </table>
 
@@ -38,18 +39,16 @@
 
     <form action="account" method="POST">
         username: ${selectedUser.username}<br>
-        first name: <input type="text" name="firstname" value="${selectedUser.firstname}"><br>
-        last name: <input type="text" name="lastname" value="${selectedUser.lastname}"><br>
-        password: <input type="text" name="password" value="${selectedUser.password}"><br>
-        email: <input type="email" name="email" value="${selectedUser.email}"><br>
+        first name: <input type="text" name="firstname" value="${selectedUser.firstname}" maxlength="50"><br>
+        last name: <input type="text" name="lastname" value="${selectedUser.lastname}" maxlength="50"><br>
+        password: <input type="text" name="password" value="${selectedUser.password}" maxlength="30"><br>
+        email: <input type="email" name="email" value="${selectedUser.email}" maxlength="30"><br>
         company: ${selectedUser.company.companyName}<br>
         active: <input type="checkbox" name="active" ${selectedUser.active ? "checked" : ""}><br>
         <input type="hidden" name="action" value="edit">
         <input type="submit" value="Save">
     </form>
-
     <br>
-    ${themessage}
 
 </body>
 </html>

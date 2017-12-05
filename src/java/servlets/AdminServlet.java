@@ -86,7 +86,7 @@ public class AdminServlet extends HttpServlet {
 
                 if (selectedUsername.equals(user)) {
                     //you cant delete yourself!
-                    request.setAttribute("message", "Whoops.  You can't delete yourself.");
+                    request.setAttribute("message", "Whoops.  You can't delete yourself!");
 
                     action = request.getParameter("action");
 

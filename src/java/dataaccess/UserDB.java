@@ -69,6 +69,7 @@ public class UserDB {
      * @throws NotesDBException
      */
     public User getUser(String username) throws NotesDBException {
+        
         EntityManager em = DBUtil.getEmFactory().createEntityManager();
         
         try {
