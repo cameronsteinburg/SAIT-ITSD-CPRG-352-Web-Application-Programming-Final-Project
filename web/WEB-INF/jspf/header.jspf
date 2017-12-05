@@ -5,6 +5,9 @@
 
 
 <h2>
+    Current User: ${curuser.firstname}
+    <br>
+    <br>
     <c:if test = "${curuser != null}">
         
         <a href="notes">Notes</a> 
