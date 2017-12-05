@@ -13,13 +13,14 @@
         
         <c:if test = "${curuser.role.roleID == '1'}">
             <a href="admin">Users</a>
+            <a href="companies">Companies</a>
         </c:if>
             
             <c:if test = "${curuser.role.roleID == '3'}">
             <a href="companyAdmin">Company Users</a>
         </c:if>
         
-        <a id="logoutButton" href="<c:url value='login?action=logout'/>">Logout</a>
+            <div align="right"><a id="logoutButton" href="<c:url value='login?action=logout'/>">Logout</a></div>
     </c:if>
 </h2>
     
