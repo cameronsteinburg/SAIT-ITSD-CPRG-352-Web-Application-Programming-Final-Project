@@ -21,6 +21,7 @@ public class LoginServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         if (request.getParameter("action") != null && request.getParameter("action").equals("resetPassword")) {
+            
             getServletContext().getRequestDispatcher("/WEB-INF/reset.jsp").forward(request, response);
             return;
         }
@@ -67,9 +68,11 @@ public class LoginServlet extends HttpServlet {
                     }
 
                 } catch (UserDBException ex) {
-                    
+
                     ex.printStackTrace();
-                    throw new ServletException();
+                    request.setAttribute("message", "Invalid.  Please try again.");
+                    getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
+                    return;
                 }
 
                 response.sendRedirect("admin");
@@ -79,11 +82,14 @@ public class LoginServlet extends HttpServlet {
 
                 request.setAttribute("message", "Invalid.  Please try again.");
                 getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
+                return;
             }
         } catch (UserDBException ex) {
-            
+
             ex.printStackTrace();
-            throw new ServletException();        
+            request.setAttribute("message", "Invalid.  Please try again.");
+            getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
+            return;
         }
 
     }

@@ -36,21 +36,35 @@ public class CompanyAdminServlet extends HttpServlet {
 
             try {
 
-                User user = us.get(selectedUsername);
-                request.setAttribute("selectedUser", user);
-                request.setAttribute("thisRole", user.getRole().getRoleName());
-            } catch (UserDBException ex) {
+                User adminCheck = us.get(selectedUsername);
 
+                if (adminCheck.getRole().getRoleID() != 1) {
+
+                    try {
+
+                        User user = us.get(selectedUsername);
+                        request.setAttribute("selectedUser", user);
+                        request.setAttribute("thisRole", user.getRole().getRoleName());
+
+                    } catch (UserDBException ex) {
+
+                        ex.printStackTrace();
+                        throw new ServletException();
+                    }
+                    request.setAttribute("message", "Edit User Below");
+                } else {
+                    request.setAttribute("message", "Whoops. You can't Edit System Admins");
+                }
+            } catch (UserDBException ex) {
                 ex.printStackTrace();
-                throw new ServletException();
             }
-            request.setAttribute("message", "Edit User Below");
+
         }
-        
+
         List<Role> roles = UserDB.getRoles();
         roles.remove(0);
         request.setAttribute("roles", roles);
-        
+
         List<Company> comps = null;
         CompanyDB cdb = new CompanyDB();
 
@@ -123,16 +137,26 @@ public class CompanyAdminServlet extends HttpServlet {
                 String selectedUsername = request.getParameter("selectedUsername");
 
                 UserDB userdb = new UserDB();
+                User newPhoneWhoDis = userdb.getUser(selectedUsername);
 
                 String user = (String) session.getAttribute("username");
 
-                if (selectedUsername.equals(user)) {
+                if (selectedUsername.equals(user) || newPhoneWhoDis.getRole().getRoleID() == 1) {
                     //you cant delete yourself!
-                    request.setAttribute("message", "Whoops.  You can't delete yourself.");
+                    request.setAttribute("message", "Whoops.  You can't delete yourself!");
+
+                    if (newPhoneWhoDis.getRole().getRoleID() == 1) {
+                        request.setAttribute("message", "Whoops.  You can't delete a System Admin!.");
+                    }
+
+                    List<Role> roles = UserDB.getRoles();
+                    roles.remove(0);
+                    request.setAttribute("roles", roles);
 
                     action = request.getParameter("action");
 
-                    if (action != null && action.equals("view")) {
+                    if (action != null && action.equals("view")) { //need the data again
+
                         selectedUsername = request.getParameter("selectedUsername");
 
                         try {
@@ -182,14 +206,22 @@ public class CompanyAdminServlet extends HttpServlet {
 
             } else if (action.equals("edit")) {
 
+                String roleIDSTR = request.getParameter("selectRole");
+                int roleID = Integer.parseInt(roleIDSTR);
+                Role role = new Role(roleID);
+
                 Company thisCompany = curuser.getCompany();
-                us.update(username, password, email, active, firstname, lastname, thisCompany);
+                us.update(username, password, email, active, firstname, lastname, thisCompany, role);
                 request.setAttribute("message", "Account Successfully Updated!");
 
             } else if (action.equals("add")) {
 
+                String roleIDSTR = request.getParameter("selectRole");
+                int roleID = Integer.parseInt(roleIDSTR);
+                Role role = new Role(roleID);
+
                 Company thisCompany = curuser.getCompany();
-                us.insert(username, password, email, active, firstname, lastname, thisCompany);
+                us.insert(username, password, email, active, firstname, lastname, thisCompany, role);
                 request.setAttribute("message", "Account Successfully Added!");
             }
 
@@ -221,6 +253,10 @@ public class CompanyAdminServlet extends HttpServlet {
             }
         }
 
+        List<Role> roles = UserDB.getRoles();
+        roles.remove(0);
+        request.setAttribute("roles", roles);
+        
         request.setAttribute("users", mathcingUsers);
 
         getServletContext().getRequestDispatcher("/WEB-INF/admin/companyUsers.jsp").forward(request, response);

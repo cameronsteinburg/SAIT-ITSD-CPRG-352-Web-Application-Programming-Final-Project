@@ -62,12 +62,12 @@
             password: <input type="password" name="password" maxlength="30"><br>
             email: <input type="email" name="email" maxlength="30"><br>
             company: ${thisCompany}<br>
-            active?: <input type="checkbox" name="active"><br>
             role: <select name="selectRole">
                 <c:forEach var="roles" items="${roles}">
                     <option value="${roles.roleID}">${roles.roleName}</option>
                 </c:forEach>
             </select><br>
+            active?: <input type="checkbox" name="active"><br>
             <input type="hidden" name="action" value="add">
             <input type="submit" value="Save">
         </form>

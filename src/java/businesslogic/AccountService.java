@@ -23,11 +23,23 @@ public class AccountService {
 
             User user = userDB.getUser(username);
 
-            if (user.getPassword().equals(password)) {
-                return user;
+            try {
+                if (user.getPassword().equals(password)) {
+                    return user;
+                }
+            } catch (NullPointerException e) {
+                
+                e.printStackTrace();
+                throw new UserDBException();
             }
 
         } catch (UserDBException e) {
+
+            e.printStackTrace();
+            throw new UserDBException();
+
+        } catch (NullPointerException e) {
+
             e.printStackTrace();
             throw new UserDBException();
         }
@@ -35,7 +47,7 @@ public class AccountService {
         return null;
     }
 
-    public void changePassword(String uuid, String password) throws UserDBException{
+    public void changePassword(String uuid, String password) throws UserDBException {
         UserDB db = new UserDB();
         try {
             User user = db.getByUUID(uuid);
@@ -71,22 +83,22 @@ public class AccountService {
                 contents.put("link", link);
 
                 try {
-                    
+
                     WebMailService.sendMail(email, "Password Reset Request", path, contents);
-                    
+
                 } catch (IOException ex) {
-                    
+
                     ex.printStackTrace();
                     throw new IOException();
                 }
 
             } catch (MessagingException ex) {
-                
+
                 ex.printStackTrace();
                 return 2;
-                
+
             } catch (NamingException ex) {
-                
+
                 ex.printStackTrace();
                 return 2;
             }
