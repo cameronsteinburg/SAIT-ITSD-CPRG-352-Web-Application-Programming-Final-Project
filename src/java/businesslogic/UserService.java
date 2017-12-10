@@ -33,17 +33,41 @@ public class UserService {
         user.setCompany(company);
         return userDB.update(user);
     }
+    
+    public int update(String username, String password, String email, boolean active, String firstname, String lastname, Company company, Role role) throws UserDBException {
+        User user = userDB.getUser(username);
+        user.setPassword(password);
+        user.setActive(active);
+        user.setEmail(email);
+        user.setFirstname(firstname);
+        user.setLastname(lastname);
+        user.setCompany(company);
+        user.setRole(role);
+        return userDB.update(user);
+    }
  
 
     public int delete(String username) throws UserDBException  {
+       
         User deletedUser = userDB.getUser(username);
+        
         return userDB.delete(deletedUser);
     }
 
     public int insert(String username, String password, String email, boolean active, String firstname, String lastname, Company company) throws UserDBException {
+       
         User user = new User(username, password, email, active, firstname, lastname, company);
-        Role role = new Role(2);  // default regular user role
+        Role role = new Role(2);  // default regular user role   
         user.setRole(role);
+        
+        return userDB.insert(user);
+    }
+    
+    public int insert(String username, String password, String email, boolean active, String firstname, String lastname, Company company, Role role) throws UserDBException {
+       
+        User user = new User(username, password, email, active, firstname, lastname, company);
+        user.setRole(role);
+        
         return userDB.insert(user);
     }
     
@@ -54,4 +78,5 @@ public class UserService {
     public User getByEmail(String email) throws UserDBException{
         return userDB.getByEmail(email);
     }
+
 }

@@ -6,6 +6,7 @@ import dataaccess.CompanyDBException;
 import dataaccess.UserDB;
 import dataaccess.UserDBException;
 import domainmodel.Company;
+import domainmodel.Role;
 import domainmodel.User;
 import java.io.IOException;
 import java.util.List;
@@ -34,25 +35,24 @@ public class AdminServlet extends HttpServlet {
                 request.setAttribute("selectedUser", user);
 
             } catch (UserDBException ex) {
-                
+
                 ex.printStackTrace();
                 throw new ServletException();
             }
             request.setAttribute("message", "Edit User Below");
         }
-        
-        
+
         request.setAttribute("roles", UserDB.getRoles());
-        
+
         List<Company> comps = null;
         CompanyDB cdb = new CompanyDB();
-        
+
         try {
-            
+
             comps = cdb.getAll();
-            
+
         } catch (CompanyDBException ex) {
-            
+
             ex.printStackTrace();
             throw new ServletException();
         }
@@ -68,7 +68,7 @@ public class AdminServlet extends HttpServlet {
         } catch (UserDBException ex) {
 
             ex.printStackTrace();
-             throw new ServletException();
+            throw new ServletException();
         }
 
         request.setAttribute("users", users);
@@ -148,19 +148,26 @@ public class AdminServlet extends HttpServlet {
 
             } else if (action.equals("edit")) {
 
+                String roleIDSTR = request.getParameter("selectRole");
+                int roleID = Integer.parseInt(roleIDSTR);
+                Role role = new Role(roleID);
+                
                 Company newCompany = CompanyDB.getCompanyFromIDString(request.getParameter("selectCompany"));
-                us.update(username, password, email, active, firstname, lastname, newCompany);
+                us.update(username, password, email, active, firstname, lastname, newCompany, role);
                 request.setAttribute("message", "Account Successfully Updated!");
 
             } else if (action.equals("add")) {
+                String roleIDSTR = request.getParameter("selectRole");
+                int roleID = Integer.parseInt(roleIDSTR);
+                Role role = new Role(roleID);
 
                 Company newCompany = CompanyDB.getCompanyFromIDString(request.getParameter("selectCompany"));
-                us.insert(username, password, email, active, firstname, lastname, newCompany);
+                us.insert(username, password, email, active, firstname, lastname, newCompany, role);
                 request.setAttribute("message", "Account Successfully Added!");
             }
 
         } catch (Exception ex) {
-            
+
             ex.printStackTrace();
             request.setAttribute("message", "Whoops.  Could not perform that action.");
         }
@@ -168,11 +175,11 @@ public class AdminServlet extends HttpServlet {
         CompanyDB dbc = new CompanyDB();
         List<Company> comps = null;
         try {
-            
+
             comps = dbc.getAll();
-            
+
         } catch (CompanyDBException ex) {
-            
+
             ex.printStackTrace();
             throw new ServletException();
         }
@@ -186,11 +193,11 @@ public class AdminServlet extends HttpServlet {
             users = us.getAll();
 
         } catch (UserDBException ex) {
-            
+
             ex.printStackTrace();
             throw new ServletException();
         }
-        
+
         request.setAttribute("users", users);
         getServletContext().getRequestDispatcher("/WEB-INF/admin/users.jsp").forward(request, response);
     }
