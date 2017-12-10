@@ -1,12 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package filters;
 
-import dataaccess.NotesDBException;
 import dataaccess.UserDB;
+import dataaccess.UserDBException;
 import domainmodel.User;
 import java.io.IOException;
 import javax.servlet.Filter;
@@ -37,9 +32,13 @@ public class CompanyAdminFilter implements Filter{
         User user = new User();
         
         try {
+            
             user = userdb.getUser((String) session.getAttribute("username"));
-        } catch (Exception ex) {
+            
+        } catch (UserDBException ex) {
+            
             ex.printStackTrace();
+            throw new ServletException();
         }
         
         if (session.getAttribute("username") != null && user.getActive() && user.getRole().getRoleID() != 1 && user.getRole().getRoleID() != 2) { 

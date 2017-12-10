@@ -1,9 +1,8 @@
 package businesslogic;
 
 import dataaccess.CompanyDB;
-import dataaccess.UserDB;
+import dataaccess.CompanyDBException;
 import domainmodel.Company;
-import domainmodel.User;
 import java.util.List;
 
 /**
@@ -18,7 +17,7 @@ public class CompanyService {
         companyDB = new CompanyDB();
     }
 
-    public int update(String newName, int id) throws Exception {
+    public int update(String newName, int id) throws CompanyDBException {
 
         CompanyDB cdb = new CompanyDB();
         List<Company> companies = null;
@@ -37,7 +36,7 @@ public class CompanyService {
         return cdb.update(company);
     }
 
-    public int insert(String newName, int id) throws Exception {
+    public int insert(String newName, int id) throws CompanyDBException {
        CompanyDB cdb = new CompanyDB();
         List<Company> companies = null;
         companies = cdb.getAll();

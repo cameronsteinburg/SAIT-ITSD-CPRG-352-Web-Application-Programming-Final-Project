@@ -2,14 +2,14 @@ package servlets;
 
 import businesslogic.UserService;
 import dataaccess.CompanyDB;
+import dataaccess.CompanyDBException;
 import dataaccess.UserDB;
+import dataaccess.UserDBException;
 import domainmodel.Company;
 import domainmodel.User;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -38,24 +38,38 @@ public class CompanyAdminServlet extends HttpServlet {
                 User user = us.get(selectedUsername);
                 request.setAttribute("selectedUser", user);
 
-            } catch (Exception ex) {
-                Logger.getLogger(CompanyAdminServlet.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (UserDBException ex) {
+
+                ex.printStackTrace();
+                throw new ServletException();
             }
             request.setAttribute("message", "Edit User Below");
         }
 
         List<Company> comps = null;
         CompanyDB cdb = new CompanyDB();
-        comps = cdb.getAll();
+
+        try {
+            comps = cdb.getAll();
+
+        } catch (CompanyDBException ex) {
+
+            ex.printStackTrace();
+            throw new ServletException();
+        }
 
         request.setAttribute("comps", comps);
 
         List<User> users = null;
 
         try {
+
             users = us.getAll();
+
         } catch (Exception ex) {
-            Logger.getLogger(CompanyAdminServlet.class.getName()).log(Level.SEVERE, null, ex);
+
+            ex.printStackTrace();
+            throw new ServletException();
         }
 
         ArrayList<User> mathcingUsers = new ArrayList<User>();
@@ -81,12 +95,12 @@ public class CompanyAdminServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-       
+
         HttpSession session = ((HttpServletRequest) request).getSession();
         User curuser = (User) session.getAttribute("curuser");
-        
+
         request.setAttribute("thisCompany", curuser.getCompany().getCompanyName());
-        
+
         String action = request.getParameter("action");
         String username = request.getParameter("username");
         String password = request.getParameter("password");
@@ -96,13 +110,10 @@ public class CompanyAdminServlet extends HttpServlet {
         boolean active = request.getParameter("active") != null;
 
         UserService us = new UserService();
-        
-        
 
         try {
-            
+
             if (action.equals("delete")) {
-                
 
                 String selectedUsername = request.getParameter("selectedUsername");
 
@@ -127,8 +138,10 @@ public class CompanyAdminServlet extends HttpServlet {
                             int id = newuser.getCompany().getCompanyID();
                             request.setAttribute("oldCompanyID", id);
 
-                        } catch (Exception ex) {
-                            Logger.getLogger(CompanyAdminServlet.class.getName()).log(Level.SEVERE, null, ex);
+                        } catch (UserDBException ex) {
+
+                            ex.printStackTrace();
+                            throw new ServletException();
                         }
                     }
 
@@ -136,8 +149,11 @@ public class CompanyAdminServlet extends HttpServlet {
                     try {
                         users = us.getAll();
 
-                    } catch (Exception ex) {
-                        Logger.getLogger(CompanyAdminServlet.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (UserDBException ex) {
+
+                        ex.printStackTrace();
+                        throw new ServletException();
+
                     }
 
                     ArrayList<User> mathcingUsers = new ArrayList<User>();
@@ -173,19 +189,25 @@ public class CompanyAdminServlet extends HttpServlet {
             }
 
         } catch (Exception ex) {
+
+            ex.printStackTrace();
             request.setAttribute("message", "Whoops.  Could not perform that action.");
         }
 
         List<User> users = null;
 
         try {
+
             users = us.getAll();
-        } catch (Exception ex) {
-            Logger.getLogger(CompanyAdminServlet.class.getName()).log(Level.SEVERE, null, ex);
+
+        } catch (UserDBException ex) {
+
+            ex.printStackTrace();
+            throw new ServletException();
         }
 
         ArrayList<User> mathcingUsers = new ArrayList<User>();
-        
+
         int curuserCompanyID = curuser.getCompany().getCompanyID();
 
         for (int i = 0; i < users.size(); i++) {

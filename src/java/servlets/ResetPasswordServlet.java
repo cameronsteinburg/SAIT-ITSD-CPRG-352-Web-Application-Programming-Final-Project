@@ -2,10 +2,8 @@ package servlets;
 
 import businesslogic.AccountService;
 import businesslogic.UserService;
-import dataaccess.NotesDBException;
+import dataaccess.UserDBException;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -37,14 +35,23 @@ public class ResetPasswordServlet extends HttpServlet {
             String password = (String) request.getParameter("password");
 
             UserService us = new UserService();
-            String username = us.getByUUID(uuid).getUUID();
+            String username;
+            try {
+                username = us.getByUUID(uuid).getUUID();
 
-            AccountService as = new AccountService();
-            as.changePassword(username, password);
+                AccountService as = new AccountService();
+                as.changePassword(username, password);
 
-            request.setAttribute("errormessage", "Password Successfully Reset!");
-            getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
-            return;
+                request.setAttribute("errormessage", "Password Successfully Reset!");
+                getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
+                return;
+
+            } catch (UserDBException ex) {
+
+                ex.printStackTrace();
+                throw new ServletException();
+
+            }
         }
 
         String url = request.getRequestURL().toString();
@@ -57,14 +64,20 @@ public class ResetPasswordServlet extends HttpServlet {
         try {
 
             int result = as.resetPassword(email, path, url);
+
             if (result == 1) {
+
                 request.setAttribute("message", "E-mail Sent!");
             } else {
 
                 request.setAttribute("message", "Whoops. Could not perform that action");
             }
-        } catch (NotesDBException ex) {
-            Logger.getLogger(ResetPasswordServlet.class.getName()).log(Level.SEVERE, null, ex);
+
+        } catch (UserDBException ex) {
+
+            ex.printStackTrace();
+            throw new ServletException();
+
         }
 
         getServletContext().getRequestDispatcher("/WEB-INF/reset.jsp").forward(request, response);

@@ -1,10 +1,9 @@
 package servlets;
 
 import businesslogic.UserService;
+import dataaccess.UserDBException;
 import domainmodel.User;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -23,20 +22,22 @@ public class AccountServlet extends HttpServlet {
         try {
 
             User user = us.get(selectedUsername);
-            
+
             if (user.getActive() == false) {
-                
+
                 response.sendRedirect("login?logout");
-                
+
             } else if (user.getActive() == true) {
-                
+
                 request.setAttribute("selectedUser", user);
                 getServletContext().getRequestDispatcher("/WEB-INF/account/account.jsp").forward(request, response);
                 return;
             }
 
-        } catch (Exception ex) {
-            Logger.getLogger(AdminServlet.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (UserDBException ex) {
+            
+            ex.printStackTrace();
+            throw new ServletException();
         }
 
     }
@@ -50,39 +51,42 @@ public class AccountServlet extends HttpServlet {
         String firstname = request.getParameter("firstname");
         String lastname = request.getParameter("lastname");
         boolean active = request.getParameter("active") != null;
-        
-        
+
         HttpSession session = request.getSession();
         UserService us = new UserService();
         String selectedUsername = (String) session.getAttribute("username");
-        
+
         try {
-            
+
             User user = us.get(selectedUsername);
             us.update(selectedUsername, password, email, active, firstname, lastname, user.getCompany());
- 
-        } catch (Exception ex) {
-            Logger.getLogger(AccountServlet.class.getName()).log(Level.SEVERE, null, ex);
+
+        } catch (UserDBException ex) {
+                
+            ex.printStackTrace();
+            throw new ServletException();
         }
 
         try {
 
             User user = us.get(selectedUsername);
-            
+
             if (user.getActive() == false) {
-                
+
                 response.sendRedirect("login?logout");
-                
+
             } else if (user.getActive() == true) {
-                
+
                 request.setAttribute("selectedUser", user);
                 request.setAttribute("themessage", "Account Succesfully Updated!");
                 getServletContext().getRequestDispatcher("/WEB-INF/account/account.jsp").forward(request, response);
                 return;
             }
 
-        } catch (Exception ex) {
-            Logger.getLogger(AdminServlet.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (UserDBException ex) {
+            
+            ex.printStackTrace();
+            throw new ServletException();
         }
     }
 }

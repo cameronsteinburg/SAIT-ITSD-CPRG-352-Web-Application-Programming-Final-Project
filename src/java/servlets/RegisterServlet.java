@@ -2,11 +2,11 @@ package servlets;
 
 import businesslogic.UserService;
 import dataaccess.CompanyDB;
+import dataaccess.CompanyDBException;
+import dataaccess.UserDBException;
 import domainmodel.Company;
 import java.io.IOException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -23,7 +23,15 @@ public class RegisterServlet extends HttpServlet {
 
         List<Company> comps = null;
         CompanyDB cdb = new CompanyDB();
-        comps = cdb.getAll();
+
+        try {
+            comps = cdb.getAll();
+            
+        } catch (CompanyDBException ex) {
+
+            ex.printStackTrace();
+            throw new ServletException();
+        }
 
         request.setAttribute("comps", comps);
 
@@ -41,14 +49,24 @@ public class RegisterServlet extends HttpServlet {
         String lastname = request.getParameter("lastname");
 
         UserService us = new UserService();
-        Company newCompany = CompanyDB.getCompanyFromIDString(request.getParameter("selectCompany"));
-        
+        Company newCompany;
         try {
+
+            newCompany = CompanyDB.getCompanyFromIDString(request.getParameter("selectCompany"));
+
             us.insert(username, password, email, true, firstname, lastname, newCompany);
-        } catch (Exception ex) {
-            Logger.getLogger(RegisterServlet.class.getName()).log(Level.SEVERE, null, ex);
+
+        } catch (UserDBException e) {
+
+            e.printStackTrace();
+            throw new ServletException();
+
+        } catch (CompanyDBException r) {
+            
+            r.printStackTrace();
+            throw new ServletException();
         }
-        
+
         request.setAttribute("message", "Account Succesfully Created!");
         getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
     }

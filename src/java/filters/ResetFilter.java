@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package filters;
 
 import dataaccess.UserDB;
@@ -32,17 +27,23 @@ public class ResetFilter implements Filter {
         UserDB userdb = new UserDB();
         User user = new User();
         String uuid = (String) request.getParameter("uuid");
-        
-        if (session.getAttribute("username") != null || uuid == null) {
-            
-            ((HttpServletResponse) response).sendRedirect("notes");
-            return;
-            
-        } else {
+
+        if (session.getAttribute("username") == null) {
 
             chain.doFilter(request, response);
             return;
+
+        } else if (uuid != null) {
+
+            chain.doFilter(request, response);
+            return;
+
+        } else {
+            ((HttpServletResponse) response).sendRedirect("notes");
+            return;
+
         }
+
     }
 
     @Override

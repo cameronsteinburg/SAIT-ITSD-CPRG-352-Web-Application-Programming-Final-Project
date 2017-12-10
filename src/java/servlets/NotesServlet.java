@@ -6,11 +6,10 @@ import domainmodel.Note;
 import domainmodel.User;
 import dataaccess.NoteDB;
 import dataaccess.NotesDBException;
+import dataaccess.UserDBException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -35,7 +34,7 @@ public class NotesServlet extends HttpServlet {
                 NoteDB ndb = new NoteDB();
                 Note gotnote = ndb.getNote(selectedNoteId);
 
-                if (gotnote.getOwner().getUsername() == curuser.getUsername()) { //check for spoorfing
+                if (gotnote.getOwner().getUsername() == curuser.getUsername()) { //check for spoofing
 
                     Note notes = ns.get(selectedNoteId);
                     request.setAttribute("selectedNote", notes);
@@ -44,7 +43,8 @@ public class NotesServlet extends HttpServlet {
                     throw new ServletException();
                 }
 
-            } catch (NotesDBException ex){
+            } catch (NotesDBException ex) {
+
                 ex.printStackTrace();
                 throw new ServletException();
             }
@@ -67,12 +67,14 @@ public class NotesServlet extends HttpServlet {
             getServletContext().getRequestDispatcher("/WEB-INF/notes/notes.jsp").forward(request, response);
             return;
 
-        } catch (Exception ex) {
-            Logger.getLogger(NotesServlet.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NotesDBException ex) {
+
+            ex.printStackTrace();
+            throw new ServletException();
         }
 
-        getServletContext().getRequestDispatcher("/WEB-INF/notes/notes.jsp").forward(request, response);
-        return;
+        //getServletContext().getRequestDispatcher("/WEB-INF/notes/notes.jsp").forward(request, response);
+        //return;
     }
 
     @Override
@@ -107,7 +109,7 @@ public class NotesServlet extends HttpServlet {
                     NoteDB ndb = new NoteDB();
                     Note gotnote = ndb.getNote(selectedNoteId);
 
-                    if (gotnote.getOwner().getUsername() == curuser.getUsername()) { //check for spoorfing
+                    if (gotnote.getOwner().getUsername() == curuser.getUsername()) { //check for spoofing
 
                         ns.delete(selectedNoteId);
                         request.setAttribute("message", "Note Successfully Deleted!");
@@ -115,7 +117,7 @@ public class NotesServlet extends HttpServlet {
                     } else {
                         throw new ServletException();
                     }
-                    
+
                 } else if (action.equals("edit")) {
 
                     int selectedNotes = Integer.parseInt(request.getParameter("editor"));
@@ -132,11 +134,18 @@ public class NotesServlet extends HttpServlet {
                     }
 
                 } else if (action.equals("add")) {
-                    
+
                     ns.insert(title, contents, username);
                     request.setAttribute("message", "Note Successfully Added!");
                 }
             } catch (NotesDBException ex) {
+
+                ex.printStackTrace();
+                request.setAttribute("message", "Whoops.  Could not perform that action.");
+
+            } catch (UserDBException ex) {
+
+                ex.printStackTrace();
                 request.setAttribute("message", "Whoops.  Could not perform that action.");
             }
 
@@ -148,8 +157,10 @@ public class NotesServlet extends HttpServlet {
 
         try {
             notes = (List<Note>) ns.getAll();
-        } catch (Exception ex) {
-            Logger.getLogger(NotesServlet.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NotesDBException ex) {
+
+            ex.printStackTrace();
+            throw new ServletException();
         }
 
         try {
@@ -170,8 +181,10 @@ public class NotesServlet extends HttpServlet {
             getServletContext().getRequestDispatcher("/WEB-INF/notes/notes.jsp").forward(request, response);
             return;
 
-        } catch (Exception ex) {
-            Logger.getLogger(NotesServlet.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NotesDBException ex) {
+
+            ex.printStackTrace();
+            throw new ServletException();
         }
     }
 }

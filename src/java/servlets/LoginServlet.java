@@ -2,10 +2,9 @@ package servlets;
 
 import businesslogic.AccountService;
 import businesslogic.UserService;
+import dataaccess.UserDBException;
 import domainmodel.User;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -25,7 +24,7 @@ public class LoginServlet extends HttpServlet {
             getServletContext().getRequestDispatcher("/WEB-INF/reset.jsp").forward(request, response);
             return;
         }
-        
+
         if (request.getParameter("action") != null) {
 
             HttpSession session = request.getSession();
@@ -52,31 +51,39 @@ public class LoginServlet extends HttpServlet {
 
         AccountService as = new AccountService();
 
-        if (as.loginHandler(username, password) != null) {
+        try {
+            if (as.loginHandler(username, password) != null) {
 
-            session.setAttribute("username", username);
+                session.setAttribute("username", username);
 
-            UserService us = new UserService();
-            User currentUser;
-            
-            try {
-                currentUser = us.get(username);
+                UserService us = new UserService();
+                User currentUser;
 
-                if (currentUser != null && currentUser.getActive() == true) {
-                    session.setAttribute("curuser", currentUser);
+                try {
+                    currentUser = us.get(username);
+
+                    if (currentUser != null && currentUser.getActive() == true) {
+                        session.setAttribute("curuser", currentUser);
+                    }
+
+                } catch (UserDBException ex) {
+                    
+                    ex.printStackTrace();
+                    throw new ServletException();
                 }
-                
-            } catch (Exception ex) {
-                Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
+
+                response.sendRedirect("admin");
+                return;
+
+            } else {
+
+                request.setAttribute("message", "Invalid.  Please try again.");
+                getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
             }
-
-            response.sendRedirect("admin");
-            return;
-
-        } else {
-
-            request.setAttribute("message", "Invalid.  Please try again.");
-            getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
+        } catch (UserDBException ex) {
+            
+            ex.printStackTrace();
+            throw new ServletException();        
         }
 
     }

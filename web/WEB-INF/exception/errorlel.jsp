@@ -14,6 +14,7 @@
     <body>
         <h1>Error!</h1>
         <br>
-        <h3> Whoops, someone did something they shouldn't have ;)</h3>
+        <h3> Whoops, whatever you did, Java didn't like.</h3><br>
+        <h3> Hit the back button on browser to continue</h3>
     </body>
 </html>

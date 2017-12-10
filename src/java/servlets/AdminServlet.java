@@ -2,13 +2,13 @@ package servlets;
 
 import businesslogic.UserService;
 import dataaccess.CompanyDB;
+import dataaccess.CompanyDBException;
 import dataaccess.UserDB;
+import dataaccess.UserDBException;
 import domainmodel.Company;
 import domainmodel.User;
 import java.io.IOException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -33,24 +33,39 @@ public class AdminServlet extends HttpServlet {
                 User user = us.get(selectedUsername);
                 request.setAttribute("selectedUser", user);
 
-            } catch (Exception ex) {
-                Logger.getLogger(AdminServlet.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (UserDBException ex) {
+                
+                ex.printStackTrace();
+                throw new ServletException();
             }
             request.setAttribute("message", "Edit User Below");
         }
 
         List<Company> comps = null;
         CompanyDB cdb = new CompanyDB();
-        comps = cdb.getAll();
+        
+        try {
+            
+            comps = cdb.getAll();
+            
+        } catch (CompanyDBException ex) {
+            
+            ex.printStackTrace();
+            throw new ServletException();
+        }
 
         request.setAttribute("comps", comps);
 
         List<User> users = null;
 
         try {
+
             users = us.getAll();
-        } catch (Exception ex) {
-            Logger.getLogger(AdminServlet.class.getName()).log(Level.SEVERE, null, ex);
+
+        } catch (UserDBException ex) {
+
+            ex.printStackTrace();
+             throw new ServletException();
         }
 
         request.setAttribute("users", users);
@@ -97,21 +112,27 @@ public class AdminServlet extends HttpServlet {
 
                             User newuser = us.get(selectedUsername);
                             request.setAttribute("selectedUser", user);
-                            
+
                             int id = newuser.getCompany().getCompanyID();
                             request.setAttribute("oldCompanyID", id);
 
-                        } catch (Exception ex) {
-                            Logger.getLogger(AdminServlet.class.getName()).log(Level.SEVERE, null, ex);
+                        } catch (UserDBException ex) {
+
+                            ex.printStackTrace();
+                            throw new ServletException();
+
                         }
                     }
 
                     List<User> users = null;
                     try {
                         users = us.getAll();
-                        
-                    } catch (Exception ex) {
-                        Logger.getLogger(AdminServlet.class.getName()).log(Level.SEVERE, null, ex);
+
+                    } catch (UserDBException ex) {
+
+                        ex.printStackTrace();
+                        throw new ServletException();
+
                     }
                     request.setAttribute("users", users);
                     getServletContext().getRequestDispatcher("/WEB-INF/admin/users.jsp").forward(request, response);
@@ -134,26 +155,39 @@ public class AdminServlet extends HttpServlet {
                 us.insert(username, password, email, active, firstname, lastname, newCompany);
                 request.setAttribute("message", "Account Successfully Added!");
             }
-            
+
         } catch (Exception ex) {
+            
+            ex.printStackTrace();
             request.setAttribute("message", "Whoops.  Could not perform that action.");
         }
-        
+
         CompanyDB dbc = new CompanyDB();
         List<Company> comps = null;
-        comps = dbc.getAll();
-        
+        try {
+            
+            comps = dbc.getAll();
+            
+        } catch (CompanyDBException ex) {
+            
+            ex.printStackTrace();
+            throw new ServletException();
+        }
+
         request.setAttribute("comps", comps);
 
         List<User> users = null;
-        
+
         try {
-            
+
             users = us.getAll();
 
-        } catch (Exception ex) {
-            Logger.getLogger(AdminServlet.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (UserDBException ex) {
+            
+            ex.printStackTrace();
+            throw new ServletException();
         }
+        
         request.setAttribute("users", users);
         getServletContext().getRequestDispatcher("/WEB-INF/admin/users.jsp").forward(request, response);
     }

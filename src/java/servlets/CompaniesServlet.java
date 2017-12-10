@@ -2,11 +2,10 @@ package servlets;
 
 import businesslogic.CompanyService;
 import dataaccess.CompanyDB;
+import dataaccess.CompanyDBException;
 import domainmodel.Company;
 import java.io.IOException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -23,14 +22,34 @@ public class CompaniesServlet extends HttpServlet {
 
         CompanyDB cdb = new CompanyDB();
         List<Company> startingComps = null;
-        startingComps = cdb.getAll();
+
+        try {
+            
+            startingComps = cdb.getAll();
+            
+        } catch (CompanyDBException ex) {
+            
+            ex.printStackTrace();
+            throw new ServletException();
+        }
+
         int newID = startingComps.size() + 1;
         request.setAttribute("newID", newID);
 
         int currentTopID = startingComps.size();
         request.setAttribute("currentTopID", currentTopID);
 
-        List<Company> companies = cdb.getAll();
+        List<Company> companies;
+
+        try {
+            
+            companies = cdb.getAll();
+            
+        } catch (CompanyDBException ex) {
+            
+            ex.printStackTrace();
+            throw new ServletException();
+        }
         request.setAttribute("companies", companies);
 
         String action = request.getParameter("action");
@@ -63,32 +82,53 @@ public class CompaniesServlet extends HttpServlet {
 
         CompanyDB cdb = new CompanyDB();
         CompanyService cs = new CompanyService();
-        List<Company> currentCompanies = cdb.getAll();
+
+        List<Company> currentCompanies;
+        
+        try {
+            
+            currentCompanies = cdb.getAll();
+            
+        } catch (CompanyDBException ex) {
+            
+            ex.printStackTrace();
+            throw new ServletException();
+        }
 
         String action = request.getParameter("action");
         String newName = request.getParameter("companyname");
 
-        
         int newID = currentCompanies.size() + 1;
-        
+
         try {
 
             if (action.equals("edit")) {
                 int id = Integer.parseInt(request.getParameter("id"));
                 cs.update(newName, id);
                 request.setAttribute("message", "Company Successfully Updated!");
-                
+
             } else if (action.equals("add")) {
 
-              cs.insert(newName, newID);
-              request.setAttribute("message", "Company Successfully Added!");
+                cs.insert(newName, newID);
+                request.setAttribute("message", "Company Successfully Added!");
             }
 
         } catch (Exception e) {
+            
+            e.printStackTrace();
             request.setAttribute("message", "Whoops.  Could not perform that action.");
         }
 
-        List<Company> companies = cdb.getAll();
+        List<Company> companies;
+        
+        try {
+            companies = cdb.getAll();
+            
+        } catch (CompanyDBException ex) {
+            
+            ex.printStackTrace();
+            throw new ServletException();
+        }
         request.setAttribute("companies", companies);
 
         newID = companies.size() + 1;

@@ -3,8 +3,6 @@ package dataaccess;
 import domainmodel.Note;
 import domainmodel.User;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 
@@ -50,9 +48,9 @@ public class NoteDB {
 
         } catch (Exception ex) {
 
+            ex.printStackTrace();
             trans.rollback();
-            Logger.getLogger(NoteDB.class.getName()).log(Level.SEVERE, "Cannot delete " + notes.toString(), ex);
-            throw new NotesDBException("Error deleting note");
+            throw new NotesDBException();
 
         } finally {
             em.close();
@@ -80,8 +78,8 @@ public class NoteDB {
 
         } catch (Exception ex) {
 
-            Logger.getLogger(NoteDB.class.getName()).log(Level.SEVERE, "Cannot read notes", ex);
-            throw new NotesDBException("Error getting Notes");
+            ex.printStackTrace();
+            throw new NotesDBException();
 
         } finally {
             em.close();
@@ -98,8 +96,8 @@ public class NoteDB {
 
         } catch (Exception ex) {
 
-            Logger.getLogger(NoteDB.class.getName()).log(Level.SEVERE, "Cannot read notes", ex);
-            throw new NotesDBException("Error getting Notes");
+            ex.printStackTrace();
+            throw new NotesDBException();
 
         } finally {
             em.close();

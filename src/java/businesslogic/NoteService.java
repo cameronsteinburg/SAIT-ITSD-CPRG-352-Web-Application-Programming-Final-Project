@@ -2,11 +2,10 @@ package businesslogic;
 
 import dataaccess.NoteDB;
 import dataaccess.NotesDBException;
+import dataaccess.UserDBException;
 import domainmodel.Note;
 import domainmodel.User;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class NoteService {
 
@@ -24,19 +23,23 @@ public class NoteService {
         return noteDB.getAll();
     }
 
-    public int update(Note note, String title, String contents) {
+    public int update(Note note, String title, String contents) throws NotesDBException{
 
         NoteDB noteDB = new NoteDB();
 
         note.setTitle(title);
         note.setContents(contents);
         note.setDateCreated(new java.util.Date());
+        
         try {
+            
             return noteDB.update(note);
+            
         } catch (NotesDBException ex) {
-            Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
+            
+            ex.printStackTrace();
+            throw new NotesDBException();
         }
-        return 0;
     }
 
     public int delete(int noteId) throws NotesDBException {
@@ -45,7 +48,7 @@ public class NoteService {
         return noteDB.delete(deletedNote);
     }
 
-    public int insert(String title, String contents, String username) throws NotesDBException  {
+    public int insert(String title, String contents, String username) throws NotesDBException, UserDBException  {
 
         UserService us = new UserService();
         User user = us.get(username);

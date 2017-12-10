@@ -1,13 +1,11 @@
 package businesslogic;
 
-import dataaccess.NotesDBException;
 import dataaccess.UserDB;
+import dataaccess.UserDBException;
 import domainmodel.User;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.UUID;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.naming.NamingException;
 import javax.mail.MessagingException;
 
@@ -17,7 +15,7 @@ import javax.mail.MessagingException;
  */
 public class AccountService {
 
-    public User loginHandler(String username, String password) {
+    public User loginHandler(String username, String password) throws UserDBException {
 
         UserDB userDB = new UserDB();
 
@@ -29,14 +27,15 @@ public class AccountService {
                 return user;
             }
 
-        } catch (Exception e) {
+        } catch (UserDBException e) {
             e.printStackTrace();
+            throw new UserDBException();
         }
 
         return null;
     }
 
-    public boolean changePassword(String uuid, String password) {
+    public void changePassword(String uuid, String password) throws UserDBException{
         UserDB db = new UserDB();
         try {
             User user = db.getByUUID(uuid);
@@ -44,13 +43,14 @@ public class AccountService {
             user.setUUID(null);
             UserDB ur = new UserDB();
             ur.update(user);
-            return true;
-        } catch (Exception ex) {
-            return false;
+
+        } catch (UserDBException ex) {
+
+            throw new UserDBException();
         }
     }
-    
-    public int resetPassword(String email, String path, String url) throws NotesDBException {
+
+    public int resetPassword(String email, String path, String url) throws UserDBException, IOException {
 
         String uuid = UUID.randomUUID().toString();
         UserDB db = new UserDB();
@@ -58,7 +58,7 @@ public class AccountService {
         User user = us.getByEmail(email);
 
         if (user != null) {
-   
+
             user.setUUID(uuid);
             db.update(user);
 
@@ -71,16 +71,23 @@ public class AccountService {
                 contents.put("link", link);
 
                 try {
+                    
                     WebMailService.sendMail(email, "Password Reset Request", path, contents);
+                    
                 } catch (IOException ex) {
-                    Logger.getLogger(AccountService.class.getName()).log(Level.SEVERE, null, ex);
+                    
+                    ex.printStackTrace();
+                    throw new IOException();
                 }
 
             } catch (MessagingException ex) {
-                Logger.getLogger(AccountService.class.getName()).log(Level.SEVERE, null, ex);
+                
+                ex.printStackTrace();
                 return 2;
+                
             } catch (NamingException ex) {
-                Logger.getLogger(AccountService.class.getName()).log(Level.SEVERE, null, ex);
+                
+                ex.printStackTrace();
                 return 2;
             }
 

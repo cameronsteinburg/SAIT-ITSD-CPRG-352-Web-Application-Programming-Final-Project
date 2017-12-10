@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package businesslogic;
 
 import java.io.BufferedReader;
@@ -24,7 +19,9 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 public class WebMailService {
+    
     public static void sendMail(String to, String subject, String template, HashMap<String, String> contents) throws FileNotFoundException, IOException, MessagingException, NamingException {
+        
         BufferedReader br = new BufferedReader(new FileReader(new File(template)));
         
         StringBuilder body = new StringBuilder();
@@ -45,6 +42,7 @@ public class WebMailService {
     
     
     public static void sendMail(String to, String subject, String body, boolean bodyIsHTML) throws MessagingException, NamingException {
+        
         Context env = (Context)new InitialContext().lookup("java:comp/env");
         String username = (String)env.lookup("webmail-username");
         String password = (String)env.lookup("webmail-password");

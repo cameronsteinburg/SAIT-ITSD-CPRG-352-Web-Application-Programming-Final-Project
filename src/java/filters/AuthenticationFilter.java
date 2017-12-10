@@ -1,7 +1,7 @@
 package filters;
 
-import dataaccess.NotesDBException;
 import dataaccess.UserDB;
+import dataaccess.UserDBException;
 import domainmodel.User;
 import java.io.IOException;
 import javax.servlet.Filter;
@@ -33,8 +33,11 @@ public class AuthenticationFilter implements Filter {
 
         try {
             user = userdb.getUser((String) session.getAttribute("username"));
-        } catch (NotesDBException ex) {
+            
+        } catch (UserDBException ex) {
+            
             ex.printStackTrace();
+            throw new ServletException();
         }
 
         if (session.getAttribute("username") == null || user.getActive() == false) {
