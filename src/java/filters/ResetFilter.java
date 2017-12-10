@@ -1,5 +1,12 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package filters;
 
+import dataaccess.UserDB;
+import domainmodel.User;
 import java.io.IOException;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -15,39 +22,34 @@ import javax.servlet.http.HttpSession;
  *
  * @author 734972
  */
-public class AccountFilter implements Filter {
+public class ResetFilter implements Filter {
 
     private FilterConfig filterConfig = null;
 
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 
         HttpSession session = ((HttpServletRequest) request).getSession();
-
-        String username = (String) session.getAttribute("username");
-
+        UserDB userdb = new UserDB();
+        User user = new User();
+        String uuid = (String) request.getParameter("uuid");
         
-      //  try {
+        if (session.getAttribute("username") != null || uuid == null) {
+            
+            ((HttpServletResponse) response).sendRedirect("notes");
+            return;
+            
+        } else {
 
-            if (username != null) {
-
-                chain.doFilter(request, response);
-                return;
-
-            } else {
-
-                ((HttpServletResponse) response).sendRedirect("login");
-                return;
-
-            }
-        //} catch (Exception ex) {
-           // Logger.getLogger(AccountFilter.class.getName()).log(Level.SEVERE, null, ex);
-       // }
-
+            chain.doFilter(request, response);
+            return;
+        }
     }
 
+    @Override
     public void destroy() {
     }
 
+    @Override
     public void init(FilterConfig filterConfig) {
         this.filterConfig = filterConfig;
     }

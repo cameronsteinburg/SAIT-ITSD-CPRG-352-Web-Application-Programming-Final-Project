@@ -4,6 +4,8 @@ import businesslogic.NoteService;
 import businesslogic.UserService;
 import domainmodel.Note;
 import domainmodel.User;
+import dataaccess.NoteDB;
+import dataaccess.NotesDBException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,15 +29,26 @@ public class NotesServlet extends HttpServlet {
 
         if (action != null && action.equals("view")) {
 
-            int selectedNoteId = Integer.parseInt(request.getParameter("editselect"));
-
             try {
-                Note notes = ns.get(selectedNoteId);
-                request.setAttribute("selectedNote", notes);
+                int selectedNoteId = Integer.parseInt(request.getParameter("editselect"));
+                User curuser = (User) session.getAttribute("curuser");
+                NoteDB ndb = new NoteDB();
+                Note gotnote = ndb.getNote(selectedNoteId);
 
-            } catch (Exception ex) {
-                Logger.getLogger(NotesServlet.class.getName()).log(Level.SEVERE, null, ex);
+                if (gotnote.getOwner().getUsername() == curuser.getUsername()) { //check for spoorfing
+
+                    Note notes = ns.get(selectedNoteId);
+                    request.setAttribute("selectedNote", notes);
+
+                } else {
+                    throw new ServletException();
+                }
+
+            } catch (NotesDBException ex){
+                ex.printStackTrace();
+                throw new ServletException();
             }
+            request.setAttribute("message", "Edit Note Below");
         }
 
         try {
@@ -83,16 +96,26 @@ public class NotesServlet extends HttpServlet {
         UserService us = new UserService();
 
         if (contents != "" && title != "") {
-            
+
             try {
 
                 User user = us.get(username);
                 if (action.equals("delete")) {
 
                     int selectedNoteId = Integer.parseInt(request.getParameter("deleteselect"));
-                    ns.delete(selectedNoteId);
-                    request.setAttribute("message", "Note Successfully Deleted!");
+                    User curuser = (User) session.getAttribute("curuser");
+                    NoteDB ndb = new NoteDB();
+                    Note gotnote = ndb.getNote(selectedNoteId);
 
+                    if (gotnote.getOwner().getUsername() == curuser.getUsername()) { //check for spoorfing
+
+                        ns.delete(selectedNoteId);
+                        request.setAttribute("message", "Note Successfully Deleted!");
+
+                    } else {
+                        throw new ServletException();
+                    }
+                    
                 } else if (action.equals("edit")) {
 
                     int selectedNotes = Integer.parseInt(request.getParameter("editor"));
@@ -109,14 +132,14 @@ public class NotesServlet extends HttpServlet {
                     }
 
                 } else if (action.equals("add")) {
+                    
                     ns.insert(title, contents, username);
                     request.setAttribute("message", "Note Successfully Added!");
                 }
-            } catch (Exception ex) {
+            } catch (NotesDBException ex) {
                 request.setAttribute("message", "Whoops.  Could not perform that action.");
-                ex.printStackTrace();
             }
-            
+
         } else {
             request.setAttribute("message", "Whoops.  Can't enter blank data, my dude");
         }
@@ -130,7 +153,7 @@ public class NotesServlet extends HttpServlet {
         }
 
         try {
-            
+
             List<Note> notess = ns.getAll();
 
             ArrayList<Note> acceptable = new ArrayList();

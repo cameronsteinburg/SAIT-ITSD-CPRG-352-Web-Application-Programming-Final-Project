@@ -8,7 +8,7 @@
     <h1>Manage Your Notes</h1>
     <br>
     ${message}
-    <br>
+
     <ul>
         <c:forEach var="note" items="${notess}">
 

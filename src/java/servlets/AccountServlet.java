@@ -1,9 +1,6 @@
 package servlets;
 
 import businesslogic.UserService;
-import dataaccess.CompanyDB;
-import dataaccess.UserDB;
-import domainmodel.Company;
 import domainmodel.User;
 import java.io.IOException;
 import java.util.logging.Level;

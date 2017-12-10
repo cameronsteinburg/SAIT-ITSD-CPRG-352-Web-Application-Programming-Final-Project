@@ -10,21 +10,22 @@ import javax.persistence.EntityTransaction;
 
 public class NoteDB {
 
-
     
     public int insert(Note note) throws NotesDBException {
 
         EntityManager em = DBUtil.getEmFactory().createEntityManager();
         EntityTransaction trans = em.getTransaction();
+        
         User owner = note.getOwner();
         owner.getNoteCollection().add(note);
         
         try {
+            
             trans.begin();
             em.persist(note);
             em.merge(owner);
             trans.commit();
-            em.close();
+           // em.close();
             return 1;
         
         } finally {

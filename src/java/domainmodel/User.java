@@ -36,7 +36,8 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "User.findByEmail", query = "SELECT u FROM User u WHERE u.email = :email")
     , @NamedQuery(name = "User.findByActive", query = "SELECT u FROM User u WHERE u.active = :active")
     , @NamedQuery(name = "User.findByFirstname", query = "SELECT u FROM User u WHERE u.firstname = :firstname")
-    , @NamedQuery(name = "User.findByLastname", query = "SELECT u FROM User u WHERE u.lastname = :lastname")})
+    , @NamedQuery(name = "User.findByLastname", query = "SELECT u FROM User u WHERE u.lastname = :lastname")
+     , @NamedQuery(name = "User.findByUUID", query = "SELECT u FROM User u WHERE u.UUID = :UUID")})
 public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -64,6 +65,8 @@ public class User implements Serializable {
     @JoinColumn(name = "Company", referencedColumnName = "CompanyID")
     @ManyToOne(optional = false)
     private Company company;
+    @Column(name = "UUID")
+    private String UUID;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
     private List<Note> noteList;
     @JoinColumn(name = "Role", referencedColumnName = "RoleID")
@@ -179,11 +182,18 @@ public class User implements Serializable {
         }
         return true;
     }
-    
 
     @Override
     public String toString() {
         return "domainmodel.User[ username=" + username + " ]";
     }
-    
+
+    public String getUUID() {
+        return UUID;
+    }
+
+    public void setUUID(String uuid) {
+        this.UUID = uuid;
+    }
+
 }

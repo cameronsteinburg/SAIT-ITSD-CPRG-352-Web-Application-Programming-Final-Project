@@ -21,6 +21,11 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+        if (request.getParameter("action") != null && request.getParameter("action").equals("resetPassword")) {
+            getServletContext().getRequestDispatcher("/WEB-INF/reset.jsp").forward(request, response);
+            return;
+        }
+        
         if (request.getParameter("action") != null) {
 
             HttpSession session = request.getSession();

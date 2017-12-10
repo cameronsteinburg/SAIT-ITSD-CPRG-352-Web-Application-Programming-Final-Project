@@ -37,7 +37,7 @@ public class AuthenticationFilter implements Filter {
             ex.printStackTrace();
         }
 
-        if (session.getAttribute("username") == null) {
+        if (session.getAttribute("username") == null || user.getActive() == false) {
             ((HttpServletResponse) response).sendRedirect("login");
             return;
         }
@@ -52,6 +52,7 @@ public class AuthenticationFilter implements Filter {
             ((HttpServletResponse) response).sendRedirect("notes");
             return;
 
+            
         } else {
 
             ((HttpServletResponse) response).sendRedirect("companyAdmin");

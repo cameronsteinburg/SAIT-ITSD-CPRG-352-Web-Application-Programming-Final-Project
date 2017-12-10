@@ -14,7 +14,10 @@
     
     <body>
         <h1>Welcome to NotesKeepr, Please Login</h1>
-        
+        <br>
+        <a href="register">Don't have an account? Register here</a>
+        <br>
+        <br>
         <form action="login" method="post">
             username: <input type="text" name="username" maxlength="30"><br>
             password: <input type="password" name="password" maxlength="30"><br>
@@ -22,7 +25,7 @@
             <input type="submit" value="Login">
         </form>    
         <br>
-        <a href="register">Don't have an account? Register here</a>
+        <a href="login?action=resetPassword">Forgot password? Reset here</a>
         <br>
         <br>
         ${message}

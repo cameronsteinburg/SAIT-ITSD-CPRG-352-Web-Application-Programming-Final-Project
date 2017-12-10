@@ -16,11 +16,11 @@ public class NoteService {
         noteDB = new NoteDB();
     }
 
-    public Note get(int noteId) throws Exception {
+    public Note get(int noteId) throws NotesDBException {
         return noteDB.getNote(noteId);
     }
 
-    public List<Note> getAll() throws Exception {
+    public List<Note> getAll() throws NotesDBException {
         return noteDB.getAll();
     }
 
@@ -39,13 +39,13 @@ public class NoteService {
         return 0;
     }
 
-    public int delete(int noteId) throws Exception {
+    public int delete(int noteId) throws NotesDBException {
 
         Note deletedNote = noteDB.getNote(noteId);
         return noteDB.delete(deletedNote);
     }
 
-    public int insert(String title, String contents, String username) throws Exception {
+    public int insert(String title, String contents, String username) throws NotesDBException  {
 
         UserService us = new UserService();
         User user = us.get(username);
