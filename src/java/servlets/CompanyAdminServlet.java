@@ -6,6 +6,7 @@ import dataaccess.CompanyDBException;
 import dataaccess.UserDB;
 import dataaccess.UserDBException;
 import domainmodel.Company;
+import domainmodel.Role;
 import domainmodel.User;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -37,7 +38,7 @@ public class CompanyAdminServlet extends HttpServlet {
 
                 User user = us.get(selectedUsername);
                 request.setAttribute("selectedUser", user);
-
+                request.setAttribute("thisRole", user.getRole().getRoleName());
             } catch (UserDBException ex) {
 
                 ex.printStackTrace();
@@ -45,7 +46,11 @@ public class CompanyAdminServlet extends HttpServlet {
             }
             request.setAttribute("message", "Edit User Below");
         }
-
+        
+        List<Role> roles = UserDB.getRoles();
+        roles.remove(0);
+        request.setAttribute("roles", roles);
+        
         List<Company> comps = null;
         CompanyDB cdb = new CompanyDB();
 

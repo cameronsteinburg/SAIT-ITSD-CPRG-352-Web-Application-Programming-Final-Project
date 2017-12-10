@@ -63,6 +63,11 @@
             email: <input type="email" name="email" maxlength="30"><br>
             company: ${thisCompany}<br>
             active?: <input type="checkbox" name="active"><br>
+            role: <select name="selectRole">
+                <c:forEach var="roles" items="${roles}">
+                    <option value="${roles.roleID}">${roles.roleName}</option>
+                </c:forEach>
+            </select><br>
             <input type="hidden" name="action" value="add">
             <input type="submit" value="Save">
         </form>
@@ -77,6 +82,23 @@
             email: <input type="email" name="email" value="${selectedUser.email}" maxlength="30"><br>
             company: ${thisCompany}<br>
             active?: <input type="checkbox" name="active" ${selectedUser.active ? "checked" : ""}><br>
+
+            <c:choose>
+
+                <c:when test="${selectedUser.role.roleID=='1'}">
+                    role: ${thisRole}<br>
+                </c:when>
+
+                <c:otherwise>
+                    role: <select name="selectRole" >
+                        <c:forEach var="roles" items="${roles}">
+                            <option value="${roles.roleID}"${roles.roleID == selectedUser.role.roleID ? 'selected' : ''}>${roles.roleName}</option>
+                        </c:forEach>
+                    </select><br>
+
+                </c:otherwise>
+            </c:choose>
+
             <input type="hidden" name="action" value="edit">
             <input type="submit" value="Save">
         </form>

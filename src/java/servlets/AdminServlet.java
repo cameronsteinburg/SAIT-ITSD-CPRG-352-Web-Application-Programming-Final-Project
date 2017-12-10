@@ -40,7 +40,10 @@ public class AdminServlet extends HttpServlet {
             }
             request.setAttribute("message", "Edit User Below");
         }
-
+        
+        
+        request.setAttribute("roles", UserDB.getRoles());
+        
         List<Company> comps = null;
         CompanyDB cdb = new CompanyDB();
         

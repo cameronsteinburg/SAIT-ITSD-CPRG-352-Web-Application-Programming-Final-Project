@@ -4,14 +4,14 @@
 
 </head>
 <body>
-    
+
     <h1>System Admin - Manage Users</h1>
-    
+
     <br>
     ${message}
     <br>
     <br>
-    
+
     <table border="1">
         <tr>
             <th>Username</th>
@@ -24,9 +24,9 @@
             <th>Delete</th>
             <th>Edit</th>
         </tr>
-        
+
         <c:forEach var="user" items="${users}">
-            
+
             <tr>
                 <td>${user.username}</td>
                 <td>${user.firstname}</td>
@@ -58,13 +58,13 @@
             </tr>
         </c:forEach>
     </table>
-    
+
     <c:if test="${selectedUser == null}">
-       
+
         <h3>Add User</h3>
-        
+
         <form action="admin" method="POST">
-            
+
             username: <input type="text" name="username" maxlength="30"><br>
             first name: <input type="text" name="firstname" maxlength="50"><br>
             last name: <input type="text" name="lastname" maxlength="50"><br>
@@ -75,19 +75,24 @@
                     <option value="${comps.companyID}">${comps.companyName}</option>
                 </c:forEach>
             </select><br>
+            role: <select name="selectRole">
+                <c:forEach var="roles" items="${roles}">
+                    <option value="${roles.roleID}">${roles.roleName}</option>
+                </c:forEach>
+            </select><br>
             active?: <input type="checkbox" name="active"><br>
             <input type="hidden" name="action" value="add">
             <input type="submit" value="Save">
-            
+
         </form>
     </c:if>
-        
+
     <c:if test="${selectedUser != null}">
-        
+
         <h3>Edit User</h3>
-        
+
         <form action="admin" method="POST">
-            
+
             username: <input type="text" maxlength="30" name="username" value="${selectedUser.username}" readonly><br>
             first name: <input type="text" maxlength="50" name="firstname" value="${selectedUser.firstname}"><br>
             last name: <input type="text" maxlength="50" name="lastname" value="${selectedUser.lastname}"><br>
@@ -98,10 +103,15 @@
                     <option value="${comps.companyID}"${comps.companyID == selectedUser.company.companyID ? 'selected' : ''}>${comps.companyName}</option>
                 </c:forEach>
             </select><br>
+            role: <select name="selectRole">
+                <c:forEach var="roles" items="${roles}">
+                    <option value="${roles.roleID}"${roles.roleID == selectedUser.role.roleID ? 'selected' : ''}>${roles.roleName}</option>
+                </c:forEach>
+            </select><br>
             active?: <input type="checkbox" name="active" ${selectedUser.active ? "checked" : ""}><br>
             <input type="hidden" name="action" value="edit">
             <input type="submit" value="Save">
-            
+
         </form>
     </c:if>
 </body>

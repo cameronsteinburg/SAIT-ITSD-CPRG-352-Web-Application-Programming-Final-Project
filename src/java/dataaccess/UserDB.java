@@ -1,6 +1,8 @@
 package dataaccess;
 
+import domainmodel.Role;
 import domainmodel.User;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -122,7 +124,7 @@ public class UserDB {
         try {
 
             User user = em.createNamedQuery("User.findByUUID", User.class).setParameter("UUID", uuid).getSingleResult();
-            em.close();
+           // em.close();
             return user;
 
         } catch (Exception ex) {
@@ -138,12 +140,13 @@ public class UserDB {
     }
 
     public User getByEmail(String email) throws UserDBException {
+        
         EntityManager em = DBUtil.getEmFactory().createEntityManager();
 
         try {
 
             User user = em.createNamedQuery("User.findByEmail", User.class).setParameter("email", email).getSingleResult();
-            em.close();
+          //  em.close();
             return user;
 
         } catch (Exception ex) {
@@ -155,5 +158,18 @@ public class UserDB {
 
             em.close();
         }
+    }
+    
+    public static ArrayList<Role> getRoles(){
+        
+        Role admin = new Role(1, "System Admin");
+        Role user = new Role(2, "Regular User");
+        Role companyAdmin = new Role(3, "Company Admin");
+        ArrayList<Role> roles = new ArrayList<Role>();
+        roles.add(admin);
+        roles.add(user);
+        roles.add(companyAdmin);
+        
+        return roles;
     }
 }

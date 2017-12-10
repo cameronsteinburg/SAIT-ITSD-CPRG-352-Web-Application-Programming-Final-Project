@@ -54,6 +54,7 @@ INSERT INTO `User` VALUES ('admin', 'password', 'cprg352+admin@gmail.com', 1, 'B
 INSERT INTO `User` VALUES ('admin2', 'password', 'cprg352+admin2@gmail.com', 0, 'Admin2', 'Admin2', 1, 1, null);
 
 INSERT INTO `user` VALUES ('comp1', 'password', 'cprg352+comp1@gmail.com', 1, 'Jean-Luc', 'Picard', 3, 2, null);
+INSERT INTO `user` VALUES ('comp3', 'password', 'cprg352+comp1@gmail.com', 1, 'Pickle', 'Man', 3, 1, null);
 INSERT INTO `user` VALUES ('user1', 'password', 'cprg352+user1@gmail.com', 1, 'William', 'Riker', 2, 2, null);
 INSERT INTO `user` VALUES ('user2', 'password', 'cprg352+user2@gmail.com', 1, 'Geordi', 'La Forge', 2, 2, null);
 INSERT INTO `user` VALUES ('user3', 'password', 'cprg352+user3@gmail.com', 0, 'Wesley', 'Crusher', 2, 2, null);
