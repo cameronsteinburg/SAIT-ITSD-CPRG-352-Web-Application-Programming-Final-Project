@@ -24,13 +24,18 @@ public class NoteService {
         return noteDB.getAll();
     }
 
-    public int update(Note note, String title, String contents) throws NotesDBException {
+    public int update(Note note, String title, String contents, boolean visibility) throws NotesDBException {
 
         NoteDB noteDB = new NoteDB();
 
         note.setTitle(title);
         note.setContents(contents);
         note.setDateCreated(new java.util.Date());
+        if(visibility == true){
+            note.setVisibility(1);
+        } else {
+            note.setVisibility(0);
+        }
 
         try {
 

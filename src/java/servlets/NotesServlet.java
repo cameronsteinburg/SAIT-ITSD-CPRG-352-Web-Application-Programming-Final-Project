@@ -139,7 +139,7 @@ public class NotesServlet extends HttpServlet {
 
                         if (selectedNotes == AuthenticateUserForNotes.get(i).getNoteID()) {
 
-                            ns.update(AuthenticateUserForNotes.get(i), request.getParameter("title"), request.getParameter("contents"));
+                            ns.update(AuthenticateUserForNotes.get(i), request.getParameter("title"), request.getParameter("contents"), visibility);
                             request.setAttribute("message", "Note Successfully Edited!");
                         }
                     }
