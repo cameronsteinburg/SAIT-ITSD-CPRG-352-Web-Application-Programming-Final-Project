@@ -7,7 +7,6 @@ import domainmodel.Note;
 import domainmodel.User;
 import java.util.ArrayList;
 import java.util.List;
-import javax.servlet.ServletException;
 
 public class NoteService {
 
@@ -50,13 +49,19 @@ public class NoteService {
         return noteDB.delete(deletedNote);
     }
 
-    public int insert(String title, String contents, String username) throws NotesDBException, UserDBException {
+    public int insert(String title, String contents, String username, boolean visibility) throws NotesDBException, UserDBException {
 
         UserService us = new UserService();
         User user = us.get(username);
         java.util.Date date = new java.util.Date();
         Note note = new Note(-1, date, title, contents);
 
+        if(visibility == true){
+            note.setVisibility(1);
+        } else {
+            note.setVisibility(0);
+        }
+        
         note.setOwner(user);
         return noteDB.insert(note);
     }

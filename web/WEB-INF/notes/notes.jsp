@@ -7,15 +7,25 @@
     <h1>Manage Your Notes</h1>
     <br>
     ${message}
+    <table border="1">
 
-    <ul>
-        <c:forEach var="note" items="${notess}">
 
-            <li>${note.title}<br><ul><li>${note.dateCreated}</li><li>${note.contents}</li></ul></li>
+        <ul>
+            <c:forEach var="note" items="${notess}">
+                <tr><td>
+                    <li>${note.title}<br><br><ul><li>${note.dateCreated}</li><li>${note.contents}</li></ul></li>
+                    <br>
+                    Visibility:  <c:if test="${note.visibility == 0}">Private</c:if><c:if test="${note.visibility == 1}">Public</c:if>
+                    <br>
+                    <br>
+                </td></tr>
+            </c:forEach>
+            <br>
+        </ul>
 
-        </c:forEach>
-    </ul>
 
+    </table>
+    <br>
 
     <form action="notes" method="post" >
         <select name="deleteselect">
@@ -44,6 +54,7 @@
         <form action="notes" method="POST">
             title: <input type="text" name="title" maxlength="30"><br>
             contents: <input type="text" name="contents" maxlength="20000"><br>
+            public? <input type="checkbox" name="publicOrPrivate"><br>
             <input type="hidden" name="action" value="add">
             <input type="submit" value="Save">
         </form>
@@ -53,8 +64,9 @@
         <form action="notes" method="POST">
             <input type="hidden" name="editor" value="${selectedNote.noteID}">
             title: <input type="text" name="title" maxlength="30" value="${selectedNote.title}"><br>
-            date: <input type="text" name="date" value="${selectedNote.dateCreated}"><br>
+            date created: ${selectedNote.dateCreated}<br>
             contents: <input type="text" name="contents" maxlength="20000" value="${selectedNote.contents}"><br>
+            public? <input type="checkbox" name="publicOrPrivate"<c:if test="${selectedNote.visibility == 1}">checked</c:if>><br>
             <input type="hidden" name="action" value="edit">
             <input type="submit" value="Save">
         </form>
@@ -74,10 +86,10 @@
             <c:forEach var="note" items="${publicNotes}">
 
                 <tr>
-                    <th width="100">${note.owner.username}</th>
-                    <th width="300">${note.title}</th>
-                    <th width="200">${note.contents}</th>
-                    <th width="400">${note.dateCreated}</th>
+                    <td width="100">${note.owner.username}</td>
+                    <td width="300">${note.title}</td>
+                    <td width="200">${note.contents}</td>
+                    <td width="400">${note.dateCreated}</td>
                 </tr>
 
             </c:forEach>

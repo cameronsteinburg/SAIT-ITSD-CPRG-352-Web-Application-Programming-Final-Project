@@ -94,6 +94,7 @@ public class NotesServlet extends HttpServlet {
         String noteId = request.getParameter("noteId");
         String contents = request.getParameter("contents");
         String title = request.getParameter("title");
+        boolean visibility = request.getParameter("publicOrPrivate") != null;
 
         int noteIdInt = -1;
 
@@ -144,8 +145,8 @@ public class NotesServlet extends HttpServlet {
                     }
 
                 } else if (action.equals("add")) {
-
-                    ns.insert(title, contents, username);
+                    
+                    ns.insert(title, contents, username, visibility);
                     request.setAttribute("message", "Note Successfully Added!");
                 }
             } catch (NotesDBException ex) {
@@ -188,8 +189,7 @@ public class NotesServlet extends HttpServlet {
 
             request.setAttribute("notess", acceptable);
             
-            
-
+           
             User user = us.get((String) session.getAttribute("username")); //current user
             ArrayList<Note> publicNotes = NoteService.getPublicNotes(user);
             request.setAttribute("publicNotes", publicNotes);

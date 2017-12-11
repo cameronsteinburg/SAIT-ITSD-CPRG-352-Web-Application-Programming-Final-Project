@@ -120,10 +120,10 @@
             <c:forEach var="note" items="${publicNotes}">
 
                 <tr>
-                    <th width="100">${note.owner.username}</th>
-                    <th width="300">${note.title}</th>
-                    <th width="200">${note.contents}</th>
-                    <th width="400">${note.dateCreated}</th>
+                    <td width="100">${note.owner.username}</td>
+                    <td width="300">${note.title}</td>
+                    <td width="200">${note.contents}</td>
+                    <td width="400">${note.dateCreated}</td>
                 </tr>
 
             </c:forEach>
