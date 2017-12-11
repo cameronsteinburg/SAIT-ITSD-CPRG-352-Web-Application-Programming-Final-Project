@@ -198,6 +198,10 @@ public class AdminServlet extends HttpServlet {
             ex.printStackTrace();
             throw new ServletException();
         }
+        
+        List<Role> roles = UserDB.getRoles();
+        roles.remove(0);
+        request.setAttribute("roles", roles);
 
         request.setAttribute("users", users);
         getServletContext().getRequestDispatcher("/WEB-INF/admin/users.jsp").forward(request, response);

@@ -36,6 +36,7 @@ public class ResetPasswordServlet extends HttpServlet {
 
             UserService us = new UserService();
             String username;
+            
             try {
                 username = us.getByUUID(uuid).getUUID();
 

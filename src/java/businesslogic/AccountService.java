@@ -28,7 +28,7 @@ public class AccountService {
                     return user;
                 }
             } catch (NullPointerException e) {
-                
+
                 e.printStackTrace();
                 throw new UserDBException();
             }
@@ -108,6 +108,81 @@ public class AccountService {
         } else {
             return 2;
         }
+    }
+
+    public int sendActivationEmail(String email, String path, String url, String uuid) throws UserDBException, IOException {
+
+        UserService us = new UserService();
+        User user = us.getByEmail(email);
+
+        String link = url + "?uuid=" + uuid;
+        user.setUUID(uuid);
+
+        try {
+            HashMap<String, String> contents = new HashMap<>();
+            contents.put("firstname", user.getFirstname());
+            contents.put("lastname", user.getLastname());
+            contents.put("username", user.getUsername());
+            contents.put("link", link);
+
+            try {
+
+                WebMailService.sendMail(email, "NotesKeepr Activation", path, contents);
+
+            } catch (IOException ex) {
+
+                ex.printStackTrace();
+                throw new IOException();
+            }
+
+        } catch (MessagingException ex) {
+
+            ex.printStackTrace();
+            return 2;
+
+        } catch (NamingException ex) {
+
+            ex.printStackTrace();
+            return 2;
+        }
+
+        return 1;
+    }
+
+    public int sendWelcome(String email, String url, String path) throws UserDBException, IOException {
+
+        UserService us = new UserService();
+        User user = us.getByEmail(email);
+
+        try {
+            HashMap<String, String> contents = new HashMap<>();
+            contents.put("firstname", user.getFirstname());
+            contents.put("lastname", user.getLastname());
+            contents.put("username", user.getUsername());
+
+            try {
+
+                WebMailService.sendMail(email, "Welcome!", path, contents);
+
+            } catch (IOException ex) {
+
+                ex.printStackTrace();
+                throw new IOException();
+            }
+
+        } catch (MessagingException ex) {
+
+            ex.printStackTrace();
+            return 2;
+
+        } catch (NamingException ex) {
+
+            ex.printStackTrace();
+            return 2;
+        }
+
+        return 1;
+
     }
 
 }

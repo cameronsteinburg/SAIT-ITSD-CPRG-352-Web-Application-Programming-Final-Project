@@ -63,7 +63,7 @@ INSERT INTO `user` VALUES ('comp2', 'password', 'cprg352+comp2@gmail.com', 1, 'P
 INSERT INTO `user` VALUES ('user4', 'password', 'cprg352+user4@gmail.com', 1, 'Twinkle', 'Sparkle', 2, 3, null);
 INSERT INTO `user` VALUES ('user5', 'password', 'cprg352+user5@gmail.com', 1, 'Pinkie', 'Pie', 2, 3, null);
 INSERT INTO `user` VALUES ('user6', 'password', 'cprg352+user6@gmail.com', 0, 'Rainbow', 'Dash', 2, 3, null);
-INSERT INTO `user` VALUES ('steinburgcameron', 'password', 'johnsmith734972@gmail.com', 1, 'Cameron', 'Steinburg', 2, 1, null);
+--INSERT INTO `user` VALUES ('steinburgcameron', 'password', 'johnsmith734972@gmail.com', 1, 'Cameron', 'Steinburg', 2, 1, null);
 
 INSERT INTO `note` (`DateCreated`, `Title`, `Contents`, `Owner`) VALUES (NOW(), 'Captains Log Stardate 41153.7', 'Our destination is planet Deneb IV beyond which lies the great, unexplored mass of the galaxy.', 'comp1');
 INSERT INTO `note` (`DateCreated`, `Title`, `Contents`, `Owner`) VALUES (NOW(), 'Personal Log, Stardate 41153.7', 'The USS Hood has dropped me off at Farpoint Station.', 'user1');

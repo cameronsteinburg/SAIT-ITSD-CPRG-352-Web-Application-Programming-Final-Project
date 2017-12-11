@@ -63,6 +63,16 @@ public class UserService {
         return userDB.insert(user);
     }
     
+    public int insert(String username, String password, String email, boolean active, String firstname, String lastname, Company company, String uuid) throws UserDBException {
+       
+        User user = new User(username, password, email, active, firstname, lastname, company);
+        Role role = new Role(2);  // default regular user role   
+        user.setUUID(uuid);
+        user.setRole(role);
+        
+        return userDB.insert(user);
+    }
+    
     public int insert(String username, String password, String email, boolean active, String firstname, String lastname, Company company, Role role) throws UserDBException {
        
         User user = new User(username, password, email, active, firstname, lastname, company);
@@ -78,5 +88,6 @@ public class UserService {
     public User getByEmail(String email) throws UserDBException{
         return userDB.getByEmail(email);
     }
+
 
 }

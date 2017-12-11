@@ -28,7 +28,7 @@
                     <option value="${comps.companyID}">${comps.companyName}</option>
                 </c:forEach>
             </select><br>
-            <input type="hidden" name="action" value="add">
+            <input type="hidden" name="action" value="register">
             <input type="submit" value="Save">
         </form>
     </body>
