@@ -4,6 +4,7 @@ import businesslogic.AccountService;
 import businesslogic.UserService;
 import dataaccess.CompanyDB;
 import dataaccess.CompanyDBException;
+import dataaccess.DuplicateEmailException;
 import dataaccess.UserDB;
 import dataaccess.UserDBException;
 import domainmodel.Company;
@@ -37,7 +38,7 @@ public class RegisterServlet extends HttpServlet {
                 user = us.getByUUID(uuid);
                 user.setActive(true);
                 user.setUUID(null);
-                UserDB udb= new UserDB();
+                UserDB udb = new UserDB();
                 udb.update(user);
 
                 String url = request.getRequestURL().toString();
@@ -84,7 +85,7 @@ public class RegisterServlet extends HttpServlet {
 
         String action = (String) request.getParameter("action");
 
-         if (action != null && action.equals("register")) {
+        if (action != null && action.equals("register")) {
 
             String username = request.getParameter("username");
             String password = request.getParameter("password");
@@ -92,18 +93,55 @@ public class RegisterServlet extends HttpServlet {
             String firstname = request.getParameter("firstname");
             String lastname = request.getParameter("lastname");
 
+            try {
+
+                boolean unique = AccountService.isUnique(email);
+
+                if (unique == false) {
+
+                    throw new DuplicateEmailException();
+                }
+
+                if (username == "" || password == "" || email == "" || firstname == "" || lastname == "") {
+                    
+                    throw new IOException();
+                }
+
+            } catch (Exception e) {
+
+                e.printStackTrace();
+                request.setAttribute("message", "Whoops.  Could not perform that action!");
+
+                List<Company> comps = null;
+                CompanyDB cdb = new CompanyDB();
+
+                try {
+                    comps = cdb.getAll();
+
+                } catch (CompanyDBException ex) {
+
+                    ex.printStackTrace();
+                    throw new ServletException();
+                }
+
+                request.setAttribute("comps", comps);
+
+                getServletContext().getRequestDispatcher("/WEB-INF/register.jsp").forward(request, response);
+                return;
+
+            }
+
             UserService us = new UserService();
             Company newCompany;
 
             try {
 
                 String uuid = UUID.randomUUID().toString();
-                
+
                 newCompany = CompanyDB.getCompanyFromIDString(request.getParameter("selectCompany"));
                 us.insert(username, password, email, false, firstname, lastname, newCompany, uuid);
-                
-                String url = request.getRequestURL().toString();
 
+                String url = request.getRequestURL().toString();
 
                 AccountService as = new AccountService();
 

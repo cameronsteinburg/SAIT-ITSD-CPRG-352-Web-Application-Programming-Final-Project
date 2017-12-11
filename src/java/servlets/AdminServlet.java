@@ -1,8 +1,10 @@
 package servlets;
 
+import businesslogic.AccountService;
 import businesslogic.UserService;
 import dataaccess.CompanyDB;
 import dataaccess.CompanyDBException;
+import dataaccess.DuplicateEmailException;
 import dataaccess.UserDB;
 import dataaccess.UserDBException;
 import domainmodel.Company;
@@ -148,16 +150,34 @@ public class AdminServlet extends HttpServlet {
 
             } else if (action.equals("edit")) {
 
+                boolean unique = AccountService.isUnique(email);
+
+                User seluser = us.get(username);
+
+                if (!email.equals(seluser.getEmail())) {
+                    if (unique == false) {
+                        throw new DuplicateEmailException();
+                    }
+                }
+
                 String roleIDSTR = request.getParameter("selectRole");
                 int roleID = Integer.parseInt(roleIDSTR);
                 Role role = new Role(roleID);
-                
+
                 Company newCompany = CompanyDB.getCompanyFromIDString(request.getParameter("selectCompany"));
                 us.update(username, password, email, active, firstname, lastname, newCompany, role);
                 request.setAttribute("message", "Account Successfully Updated!");
 
             } else if (action.equals("add")) {
-                
+
+                String message = "Whoops.  Could not perform that action.";
+                boolean unique = AccountService.isUnique(email);
+
+                if (unique == false) {
+
+                    throw new DuplicateEmailException();
+                }
+
                 String roleIDSTR = request.getParameter("selectRole");
                 int roleID = Integer.parseInt(roleIDSTR);
                 Role role = new Role(roleID);
@@ -198,7 +218,7 @@ public class AdminServlet extends HttpServlet {
             ex.printStackTrace();
             throw new ServletException();
         }
-        
+
         List<Role> roles = UserDB.getRoles();
         roles.remove(0);
         request.setAttribute("roles", roles);

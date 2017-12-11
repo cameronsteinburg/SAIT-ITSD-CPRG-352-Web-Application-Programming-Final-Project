@@ -1,8 +1,10 @@
 package servlets;
 
+import businesslogic.AccountService;
 import businesslogic.UserService;
 import dataaccess.CompanyDB;
 import dataaccess.CompanyDBException;
+import dataaccess.DuplicateEmailException;
 import dataaccess.UserDB;
 import dataaccess.UserDBException;
 import domainmodel.Company;
@@ -205,6 +207,17 @@ public class CompanyAdminServlet extends HttpServlet {
                 request.setAttribute("message", "Account Successfully Deleted!");
 
             } else if (action.equals("edit")) {
+                
+                boolean unique = AccountService.isUnique(email);
+
+                User seluser = us.get(username);
+
+                if (!email.equals(seluser.getEmail())) {
+                    if (unique == false) {
+                        throw new DuplicateEmailException();
+                    }
+                }
+
 
                 String roleIDSTR = request.getParameter("selectRole");
                 int roleID = Integer.parseInt(roleIDSTR);
@@ -215,6 +228,12 @@ public class CompanyAdminServlet extends HttpServlet {
                 request.setAttribute("message", "Account Successfully Updated!");
 
             } else if (action.equals("add")) {
+                
+                boolean unique = AccountService.isUnique(email);
+
+                if (unique == false) {
+                    throw new DuplicateEmailException();
+                }
 
                 String roleIDSTR = request.getParameter("selectRole");
                 int roleID = Integer.parseInt(roleIDSTR);

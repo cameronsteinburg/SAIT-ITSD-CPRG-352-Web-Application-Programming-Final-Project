@@ -9,11 +9,13 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <a href="login">Login Page</a>
         <title>Registration</title>
     </head>
-
     <body>
         <h2>Register a New Account</h2>
+        <br>
+        ${message}
         <br>
         <br>
         <form action="register" method="POST">

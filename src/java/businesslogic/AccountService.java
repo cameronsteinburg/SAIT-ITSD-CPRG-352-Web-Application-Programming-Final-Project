@@ -4,7 +4,9 @@ import dataaccess.UserDB;
 import dataaccess.UserDBException;
 import domainmodel.User;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 import javax.naming.NamingException;
 import javax.mail.MessagingException;
@@ -182,7 +184,25 @@ public class AccountService {
         }
 
         return 1;
-
+    }
+    
+    public static boolean isUnique(String email) throws UserDBException{
+    
+        ArrayList<String> emails = new ArrayList<String>();
+        UserService us = new UserService();
+        List<User> users = us.getAll();
+        
+        for(int i = 0; i < users.size();i++){
+            emails.add(users.get(i).getEmail());
+        }
+        
+        for(int i = 0; i < emails.size(); i++){
+            if(email.equals(emails.get(i))){
+                return false; //match found
+            }
+        }
+        
+        return true; //no match found
     }
 
 }
