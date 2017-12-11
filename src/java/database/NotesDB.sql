@@ -37,6 +37,7 @@ CREATE TABLE `note` (
   `Title` varchar(30) NOT NULL,
   `Contents` varchar(20000) CHARACTER SET utf8 NOT NULL,
   `Owner` varchar(50) NOT NULL,
+  `Visibility` int(1) NOT NULL,
   PRIMARY KEY (`NoteID`),
   KEY `FK_Note_User` (`Owner`),
   CONSTRAINT `FK_Note_User` FOREIGN KEY (`Owner`) REFERENCES `user` (`Username`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -65,6 +66,7 @@ INSERT INTO `user` VALUES ('user5', 'password', 'cprg352+user5@gmail.com', 1, 'P
 INSERT INTO `user` VALUES ('user6', 'password', 'cprg352+user6@gmail.com', 0, 'Rainbow', 'Dash', 2, 3, null);
 --INSERT INTO `user` VALUES ('steinburgcameron', 'password', 'johnsmith734972@gmail.com', 1, 'Cameron', 'Steinburg', 2, 1, null);
 
-INSERT INTO `note` (`DateCreated`, `Title`, `Contents`, `Owner`) VALUES (NOW(), 'Captains Log Stardate 41153.7', 'Our destination is planet Deneb IV beyond which lies the great, unexplored mass of the galaxy.', 'comp1');
-INSERT INTO `note` (`DateCreated`, `Title`, `Contents`, `Owner`) VALUES (NOW(), 'Personal Log, Stardate 41153.7', 'The USS Hood has dropped me off at Farpoint Station.', 'user1');
-INSERT INTO `note` (`DateCreated`, `Title`, `Contents`, `Owner`) VALUES (NOW(), 'My motivational quote', 'If I can\'t find a friendship problem, I\'ll make a friendship problem!', 'user4');
+INSERT INTO `note` (`DateCreated`, `Title`, `Contents`, `Owner`,`Visibility`) VALUES (NOW(), 'Captains Log Stardate 41153.7', 'Our destination is planet Deneb IV beyond which lies the great, unexplored mass of the galaxy.', 'comp1', 0);
+INSERT INTO `note` (`DateCreated`, `Title`, `Contents`, `Owner`, `Visibility`) VALUES (NOW(), 'Personal Log, Stardate 41153.7', 'The USS Hood has dropped me off at Farpoint Station.', 'user1', 0);
+INSERT INTO `note` (`DateCreated`, `Title`, `Contents`, `Owner`, `Visibility`) VALUES (NOW(), 'My motivational quote', 'If I can\'t find a friendship problem, I\'ll make a friendship problem!', 'user4', 0);
+INSERT INTO `note` (`DateCreated`, `Title`, `Contents`, `Owner`, `Visibility`) VALUES (NOW(), 'Test Public Note', 'This is a Public Note', 'admin', 1);

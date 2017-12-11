@@ -4,7 +4,6 @@
 
 </head>
 <body>
-
     <h1>Manage Your Notes</h1>
     <br>
     ${message}

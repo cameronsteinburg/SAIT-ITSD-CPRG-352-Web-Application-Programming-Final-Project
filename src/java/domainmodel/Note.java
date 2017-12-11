@@ -23,7 +23,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author awarsyle
  */
 @Entity
-@SequenceGenerator(name="seq", initialValue=8, allocationSize=100)
+@SequenceGenerator(name = "seq", initialValue = 8, allocationSize = 100)
 @Table(name = "note")
 @XmlRootElement
 @NamedQueries({
@@ -31,12 +31,13 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Note.findByNoteID", query = "SELECT n FROM Note n WHERE n.noteID = :noteID")
     , @NamedQuery(name = "Note.findByDateCreated", query = "SELECT n FROM Note n WHERE n.dateCreated = :dateCreated")
     , @NamedQuery(name = "Note.findByTitle", query = "SELECT n FROM Note n WHERE n.title = :title")
-    , @NamedQuery(name = "Note.findByContents", query = "SELECT n FROM Note n WHERE n.contents = :contents")})
+    , @NamedQuery(name = "Note.findByContents", query = "SELECT n FROM Note n WHERE n.contents = :contents")
+    , @NamedQuery(name = "Note.findByVisibility", query = "SELECT n FROM Note n WHERE n.visibility = :visibility")})
 public class Note implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq")
     @Basic(optional = false)
     @Column(name = "NoteID")
     private Integer noteID;
@@ -53,6 +54,9 @@ public class Note implements Serializable {
     @JoinColumn(name = "Owner", referencedColumnName = "Username")
     @ManyToOne(optional = false)
     private User owner;
+    @Basic(optional = false)
+    @Column(name = "Visibility")
+    private int visibility = 0;
 
     public Note() {
     }
@@ -132,5 +136,13 @@ public class Note implements Serializable {
     public String toString() {
         return "domainmodel.Note[ noteID=" + noteID + " ]";
     }
-    
+
+    public int getVisibility() {
+        return visibility;
+    }
+
+    public void setVisibility(int visibility) {
+        this.visibility = visibility;
+    }
+
 }

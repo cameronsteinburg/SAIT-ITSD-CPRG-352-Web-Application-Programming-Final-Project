@@ -98,11 +98,9 @@ public class AdminServlet extends HttpServlet {
         try {
             if (action.equals("delete")) {
 
-                String selectedUsername = request.getParameter("selectedUsername");
-
-                //UserDB userdb = new UserDB();
-
+                String selectedUsername = request.getParameter("selectedUsername"); 
                 String user = (String) session.getAttribute("username");
+                //UserDB userdb = new UserDB();
 
                 if (selectedUsername.equals(user)) {
                     //you cant delete yourself!

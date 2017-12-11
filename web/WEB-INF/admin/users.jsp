@@ -21,6 +21,7 @@
             <th>Role</th>
             <th>Note</th>
             <th>Company</th>
+            <th>Active?</th>
             <th>Delete</th>
             <th>Edit</th>
         </tr>
@@ -41,6 +42,7 @@
                     </ul>
                 </td>
                 <td>${user.company.companyName}</td>
+                <td>${user.active}</td>
                 <td>
                     <form action="admin" method="post" >
                         <input type="submit" value="Delete">
@@ -55,6 +57,7 @@
                         <input type="hidden" name="selectedUsername" value="${user.username}">
                     </form>
                 </td>
+
             </tr>
         </c:forEach>
     </table>
@@ -115,24 +118,24 @@
         </form>
     </c:if>
     <c:if test="${publicNotes != null}">
-        
-        <tr>
-            <th>Username</th>
-            <th>Firstname</th>
-            <th>Lastname</th>
-            <th>E-mail</th>
-            <th>Role</th>
-            <th>Note</th>
-            <th>Company</th>
-            <th>Delete</th>
-            <th>Edit</th>
-        </tr>
 
-        <c:forEach var="note" items="${publicNotes}">
-            
-            
-        </c:forEach>
-            
-    </c:if>
+    <tr>
+        <th>Username</th>
+        <th>Firstname</th>
+        <th>Lastname</th>
+        <th>E-mail</th>
+        <th>Role</th>
+        <th>Note</th>
+        <th>Company</th>
+        <th>Delete</th>
+        <th>Edit</th>
+    </tr>
+
+    <c:forEach var="note" items="${publicNotes}">
+
+
+    </c:forEach>
+
+</c:if>
 </body>
 </html>

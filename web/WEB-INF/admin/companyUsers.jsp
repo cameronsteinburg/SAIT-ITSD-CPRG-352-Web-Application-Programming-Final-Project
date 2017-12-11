@@ -18,6 +18,7 @@
             <th>Role</th>
             <th>Note</th>
             <th>Company</th>
+            <th>Active?</th>
             <th>Delete</th>
             <th>Edit</th>
         </tr>
@@ -36,6 +37,7 @@
                     </ul>
                 </td>
                 <td>${user.company.companyName}</td>
+                 <td>${user.active}</td>
                 <td>
                     <form action="companyAdmin" method="post" >
                         <input type="submit" value="Delete">
