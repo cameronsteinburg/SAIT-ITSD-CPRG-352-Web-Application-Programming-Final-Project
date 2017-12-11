@@ -1,5 +1,8 @@
 package filters;
 
+import dataaccess.UserDB;
+import dataaccess.UserDBException;
+import domainmodel.User;
 import java.io.IOException;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -24,11 +27,20 @@ public class AccountFilter implements Filter {
         HttpSession session = ((HttpServletRequest) request).getSession();
 
         String username = (String) session.getAttribute("username");
+        UserDB userdb = new UserDB();
+        User user = new User();
 
+        try {     
+            user = userdb.getUser((String) session.getAttribute("username"));
+        } catch (UserDBException ex) {
+            
+            ex.printStackTrace();
+            throw new ServletException();
+        }
         
       //  try {
 
-            if (username != null) {
+            if (username != null ||  user.getActive() == false) {
 
                 chain.doFilter(request, response);
                 return;

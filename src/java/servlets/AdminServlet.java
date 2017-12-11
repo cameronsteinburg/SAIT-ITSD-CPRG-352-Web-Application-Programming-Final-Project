@@ -26,8 +26,28 @@ public class AdminServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+        HttpSession session = ((HttpServletRequest) request).getSession();
+
         UserService us = new UserService();
-        
+
+        try {
+            User currentUser = us.get((String) session.getAttribute("username"));
+
+            if (currentUser.getActive() == false) {
+                ((HttpServletResponse) response).sendRedirect("login?action=deactivated");
+                return;
+            }
+            
+            if (currentUser.getRole().getRoleID() != 1) {
+
+                ((HttpServletResponse) response).sendRedirect("login?action=demoted");
+                return;
+            }
+        } catch (UserDBException ex) {
+            ex.printStackTrace();
+            throw new ServletException();
+        }
+
         String action = request.getParameter("action");
 
         if (action != null && action.equals("view")) {
@@ -47,7 +67,7 @@ public class AdminServlet extends HttpServlet {
             request.setAttribute("message", "Edit User Below");
         }
 
-        request.setAttribute("roles", UserDB.getRoles());
+        
 
         List<Company> comps = null;
         CompanyDB cdb = new CompanyDB();
@@ -67,12 +87,11 @@ public class AdminServlet extends HttpServlet {
         List<User> users = null;
 
         try {
-            
-            HttpSession session = ((HttpServletRequest) request).getSession();
+
             User user = us.get((String) session.getAttribute("username")); //current user
             ArrayList<Note> publicNotes = NoteService.getPublicNotes(user);
             request.setAttribute("publicNotes", publicNotes);
-            
+
             users = us.getAll();
 
         } catch (Exception ex) {
@@ -82,7 +101,7 @@ public class AdminServlet extends HttpServlet {
         }
 
         request.setAttribute("users", users);
-
+        request.setAttribute("roles", UserDB.getRoles());
         getServletContext().getRequestDispatcher("/WEB-INF/admin/users.jsp").forward(request, response);
         return;
     }
@@ -106,7 +125,7 @@ public class AdminServlet extends HttpServlet {
         try {
             if (action.equals("delete")) {
 
-                String selectedUsername = request.getParameter("selectedUsername"); 
+                String selectedUsername = request.getParameter("selectedUsername");
                 String user = (String) session.getAttribute("username");
                 //UserDB userdb = new UserDB();
 
@@ -154,7 +173,7 @@ public class AdminServlet extends HttpServlet {
                 request.setAttribute("message", "Account Successfully Deleted!");
 
             } else if (action.equals("edit")) {
-                
+
                 if (password == "" || email == "" || firstname == "" || lastname == "") {
                     throw new IOException();
                 }
@@ -178,11 +197,11 @@ public class AdminServlet extends HttpServlet {
                 request.setAttribute("message", "Account Successfully Updated!");
 
             } else if (action.equals("add")) {
-                
+
                 if (password == "" || email == "" || firstname == "" || lastname == "") {
                     throw new IOException();
                 }
-                
+
                 boolean unique = AccountService.isUnique(email);
 
                 if (unique == false) {
@@ -204,6 +223,24 @@ public class AdminServlet extends HttpServlet {
             ex.printStackTrace();
             request.setAttribute("message", "Whoops.  Could not perform that action.");
         }
+        
+        try {
+            User currentUser = us.get((String) session.getAttribute("username"));
+
+            if (currentUser.getActive() == false) {
+                ((HttpServletResponse) response).sendRedirect("login?action=deactivated");
+                return;
+            }
+            
+            if (currentUser.getRole().getRoleID() != 1) {
+
+                ((HttpServletResponse) response).sendRedirect("login?action=demoted");
+                return;
+            }
+        } catch (UserDBException ex) {
+            ex.printStackTrace();
+            throw new ServletException();
+        }
 
         CompanyDB dbc = new CompanyDB();
         List<Company> comps = null;
@@ -223,10 +260,9 @@ public class AdminServlet extends HttpServlet {
 
         try {
 
-            users = us.getAll(); 
-            
-            
-            User user = us.get((String) session.getAttribute("username")); 
+            users = us.getAll();
+
+            User user = us.get((String) session.getAttribute("username"));
             ArrayList<Note> publicNotes = NoteService.getPublicNotes(user);
             request.setAttribute("publicNotes", publicNotes);
 
@@ -237,7 +273,7 @@ public class AdminServlet extends HttpServlet {
         }
 
         List<Role> roles = UserDB.getRoles();
-        roles.remove(0);
+        //roles.remove(0);
         request.setAttribute("roles", roles);
 
         request.setAttribute("users", users);

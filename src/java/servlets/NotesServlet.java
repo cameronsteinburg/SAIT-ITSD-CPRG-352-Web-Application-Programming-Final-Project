@@ -161,7 +161,7 @@ public class NotesServlet extends HttpServlet {
             }
 
         } else {
-            request.setAttribute("message", "Whoops.  Can't enter blank data, my dude");
+            request.setAttribute("message", "Whoops. Could not perform that action.");
         }
 
         List<Note> notes = null;

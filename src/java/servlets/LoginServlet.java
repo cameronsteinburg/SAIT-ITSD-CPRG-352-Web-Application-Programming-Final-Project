@@ -25,7 +25,33 @@ public class LoginServlet extends HttpServlet {
             getServletContext().getRequestDispatcher("/WEB-INF/reset.jsp").forward(request, response);
             return;
         }
+        
+        if (request.getParameter("action") != null && request.getParameter("action").equals("inactive")) {
+            
+            request.setAttribute("message", "Whoops. This account isn't active!");
+            getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
+            return;
+        }
+        
+        if (request.getParameter("action") != null && request.getParameter("action").equals("deactivated")) {
+            
+            HttpSession session = request.getSession();
+            session.invalidate();
+            request.setAttribute("message", "You have deacitvated your account! Only an admin can reactivate");
+            getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
+            return;
+        }
+ //demoted
 
+         if (request.getParameter("action") != null && request.getParameter("action").equals("demoted")) {
+            
+            HttpSession session = request.getSession();
+            session.invalidate();
+            request.setAttribute("message", "You have demoted yourself and therfore did have the permission to stay on the previous page. Admin must reinstate role");
+            getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
+            return;
+        }
+ 
         if (request.getParameter("action") != null) {
 
             HttpSession session = request.getSession();

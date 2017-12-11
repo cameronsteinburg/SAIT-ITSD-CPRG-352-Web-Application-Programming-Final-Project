@@ -8,18 +8,18 @@
     Current User: ${curuser.firstname}
     <br>
     <br>
-    <c:if test = "${curuser != null}">
+    <c:if test="${curuser != null}">
         
         <a href="notes">Notes</a> 
         
         <a href="account">Account</a>
         
-        <c:if test = "${curuser.role.roleID == '1'}">
+        <c:if test="${curuser.role.roleID == '1'}">
             <a href="admin">Users</a>
             <a href="companies">Companies</a>
         </c:if>  
             
-        <c:if test = "${curuser.role.roleID == '3'}">
+        <c:if test="${curuser.role.roleID == '3'}">
             <a href="companyAdmin">Company Users</a>
         </c:if>
         

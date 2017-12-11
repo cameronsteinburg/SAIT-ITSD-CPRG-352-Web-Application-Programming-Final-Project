@@ -82,7 +82,8 @@ public class AccountServlet extends HttpServlet {
 
             if (wutuser.getActive() == false) {
 
-                response.sendRedirect("login?logout");
+                response.sendRedirect("login?action=deactivated");
+                return;
 
             } else if (wutuser.getActive() == true) {
 
@@ -104,8 +105,8 @@ public class AccountServlet extends HttpServlet {
 
             if (user.getActive() == false) {
 
-                response.sendRedirect("login?logout");
-
+                getServletContext().getRequestDispatcher("/WEB-INF/account/login.jsp").forward(request, response);
+                return;
             } else if (user.getActive() == true) {
 
                 request.setAttribute("selectedUser", user);

@@ -41,7 +41,7 @@
         username: ${selectedUser.username}<br>
         first name: <input type="text" name="firstname" value="${selectedUser.firstname}" maxlength="50"><br>
         last name: <input type="text" name="lastname" value="${selectedUser.lastname}" maxlength="50"><br>
-        password: <input type="text" name="password" value="${selectedUser.password}" maxlength="30"><br>
+        password: <input type="password" name="password" value="${selectedUser.password}" maxlength="30"><br>
         email: <input type="email" name="email" value="${selectedUser.email}" maxlength="30"><br>
         company: ${selectedUser.company.companyName}<br>
         active: <input type="checkbox" name="active" ${selectedUser.active ? "checked" : ""}><br>

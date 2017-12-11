@@ -31,6 +31,26 @@ public class CompanyAdminServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         UserService us = new UserService();
+        HttpSession session = ((HttpServletRequest) request).getSession();
+
+        try {
+            User currentUser = us.get((String) session.getAttribute("username"));
+
+            if (currentUser.getActive() == false) {
+                ((HttpServletResponse) response).sendRedirect("login?action=deactivated");
+                return;
+            }
+
+            if (currentUser.getRole().getRoleID() != 3) {
+
+                ((HttpServletResponse) response).sendRedirect("login?action=demoted");
+                return;
+            }
+
+        } catch (UserDBException ex) {
+            ex.printStackTrace();
+            throw new ServletException();
+        }
 
         String action = request.getParameter("action");
 
@@ -88,8 +108,7 @@ public class CompanyAdminServlet extends HttpServlet {
         try {
 
             users = us.getAll();
-            
-            HttpSession session = ((HttpServletRequest) request).getSession();
+
             User user = us.get((String) session.getAttribute("username")); //current user
             ArrayList<Note> publicNotes = NoteService.getPublicNotes(user);
             request.setAttribute("publicNotes", publicNotes);
@@ -101,7 +120,6 @@ public class CompanyAdminServlet extends HttpServlet {
         }
 
         ArrayList<User> mathcingUsers = new ArrayList<User>();
-        HttpSession session = request.getSession();
 
         User curuser = (User) session.getAttribute("curuser");
 
@@ -264,12 +282,30 @@ public class CompanyAdminServlet extends HttpServlet {
             request.setAttribute("message", "Whoops.  Could not perform that action.");
         }
 
+        try {
+            User currentUser = us.get((String) session.getAttribute("username"));
+
+            if (currentUser.getActive() == false) {
+                ((HttpServletResponse) response).sendRedirect("login?action=deactivated");
+                return;
+            }
+            
+            if (currentUser.getRole().getRoleID() != 3) {
+
+                ((HttpServletResponse) response).sendRedirect("login?action=demoted");
+                return;
+            }
+        } catch (UserDBException ex) {
+            ex.printStackTrace();
+            throw new ServletException();
+        }
+
         List<User> users = null;
 
         try {
 
             users = us.getAll();
-            
+
             User user = us.get((String) session.getAttribute("username")); //current user
             ArrayList<Note> publicNotes = NoteService.getPublicNotes(user);
             request.setAttribute("publicNotes", publicNotes);

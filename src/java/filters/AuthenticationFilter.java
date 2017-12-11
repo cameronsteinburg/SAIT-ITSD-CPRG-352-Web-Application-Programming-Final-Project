@@ -26,9 +26,7 @@ public class AuthenticationFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 
         HttpSession session = ((HttpServletRequest) request).getSession();
-
         UserDB userdb = new UserDB();
-
         User user = new User();
 
         try {
@@ -41,7 +39,7 @@ public class AuthenticationFilter implements Filter {
         }
 
         if (session.getAttribute("username") == null || user.getActive() == false) {
-            ((HttpServletResponse) response).sendRedirect("login");
+            ((HttpServletResponse) response).sendRedirect("login?action=inactive");
             return;
         }
 
