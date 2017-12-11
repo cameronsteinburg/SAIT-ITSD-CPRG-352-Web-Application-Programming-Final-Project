@@ -118,24 +118,28 @@
         </form>
     </c:if>
     <c:if test="${publicNotes != null}">
+        <br>
+        <h2>Public NotesFor Your Company</h2>
+        <table border="1">
 
-    <tr>
-        <th>Username</th>
-        <th>Firstname</th>
-        <th>Lastname</th>
-        <th>E-mail</th>
-        <th>Role</th>
-        <th>Note</th>
-        <th>Company</th>
-        <th>Delete</th>
-        <th>Edit</th>
-    </tr>
+            <tr>
+                <th>Owner</th>
+                <th>Title</th>
+                <th>Contents</th>
+                <th>Date/Time Created</th>
+            </tr>
 
-    <c:forEach var="note" items="${publicNotes}">
+            <c:forEach var="note" items="${publicNotes}">
 
+                <tr>
+                    <th width="100">${note.owner.username}</th>
+                    <th width="300">${note.title}</th>
+                    <th width="200">${note.contents}</th>
+                    <th width="400">${note.dateCreated}</th>
+                </tr>
 
-    </c:forEach>
-
-</c:if>
+            </c:forEach>
+        </table>
+    </c:if>
 </body>
 </html>

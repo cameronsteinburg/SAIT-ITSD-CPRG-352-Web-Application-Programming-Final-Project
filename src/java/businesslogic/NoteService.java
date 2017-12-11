@@ -5,7 +5,9 @@ import dataaccess.NotesDBException;
 import dataaccess.UserDBException;
 import domainmodel.Note;
 import domainmodel.User;
+import java.util.ArrayList;
 import java.util.List;
+import javax.servlet.ServletException;
 
 public class NoteService {
 
@@ -23,20 +25,20 @@ public class NoteService {
         return noteDB.getAll();
     }
 
-    public int update(Note note, String title, String contents) throws NotesDBException{
+    public int update(Note note, String title, String contents) throws NotesDBException {
 
         NoteDB noteDB = new NoteDB();
 
         note.setTitle(title);
         note.setContents(contents);
         note.setDateCreated(new java.util.Date());
-        
+
         try {
-            
+
             return noteDB.update(note);
-            
+
         } catch (NotesDBException ex) {
-            
+
             ex.printStackTrace();
             throw new NotesDBException();
         }
@@ -48,7 +50,7 @@ public class NoteService {
         return noteDB.delete(deletedNote);
     }
 
-    public int insert(String title, String contents, String username) throws NotesDBException, UserDBException  {
+    public int insert(String title, String contents, String username) throws NotesDBException, UserDBException {
 
         UserService us = new UserService();
         User user = us.get(username);
@@ -57,5 +59,28 @@ public class NoteService {
 
         note.setOwner(user);
         return noteDB.insert(note);
+    }
+
+    public static ArrayList<Note> getPublicNotes(User currentUser) throws NotesDBException {
+
+        NoteService ns = new NoteService();//get public notes for your company
+
+        try {
+            
+            List<Note> allnotes = ns.getAll();
+            ArrayList<Note> publicNotes = new ArrayList<Note>();
+
+            for (int i = 0; i < allnotes.size(); i++) {
+                if(allnotes.get(i).getVisibility() == 1 && allnotes.get(i).getOwner().getCompany().getCompanyID() == currentUser.getCompany().getCompanyID()){
+                    publicNotes.add(allnotes.get(i));
+                }
+            }
+            
+            return publicNotes;
+            
+        } catch (NotesDBException ex) {
+            ex.printStackTrace();
+            throw new NotesDBException();
+        }
     }
 }

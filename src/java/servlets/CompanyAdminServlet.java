@@ -1,6 +1,7 @@
 package servlets;
 
 import businesslogic.AccountService;
+import businesslogic.NoteService;
 import businesslogic.UserService;
 import dataaccess.CompanyDB;
 import dataaccess.CompanyDBException;
@@ -8,6 +9,7 @@ import dataaccess.DuplicateEmailException;
 import dataaccess.UserDB;
 import dataaccess.UserDBException;
 import domainmodel.Company;
+import domainmodel.Note;
 import domainmodel.Role;
 import domainmodel.User;
 import java.io.IOException;
@@ -86,6 +88,11 @@ public class CompanyAdminServlet extends HttpServlet {
         try {
 
             users = us.getAll();
+            
+            HttpSession session = ((HttpServletRequest) request).getSession();
+            User user = us.get((String) session.getAttribute("username")); //current user
+            ArrayList<Note> publicNotes = NoteService.getPublicNotes(user);
+            request.setAttribute("publicNotes", publicNotes);
 
         } catch (Exception ex) {
 
@@ -262,8 +269,12 @@ public class CompanyAdminServlet extends HttpServlet {
         try {
 
             users = us.getAll();
+            
+            User user = us.get((String) session.getAttribute("username")); //current user
+            ArrayList<Note> publicNotes = NoteService.getPublicNotes(user);
+            request.setAttribute("publicNotes", publicNotes);
 
-        } catch (UserDBException ex) {
+        } catch (Exception ex) {
 
             ex.printStackTrace();
             throw new ServletException();

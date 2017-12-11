@@ -1,17 +1,23 @@
 package servlets;
 
 import businesslogic.AccountService;
+import businesslogic.NoteService;
 import businesslogic.UserService;
 import dataaccess.CompanyDB;
 import dataaccess.CompanyDBException;
 import dataaccess.DuplicateEmailException;
+import dataaccess.NotesDBException;
 import dataaccess.UserDB;
 import dataaccess.UserDBException;
 import domainmodel.Company;
+import domainmodel.Note;
 import domainmodel.Role;
 import domainmodel.User;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -24,7 +30,7 @@ public class AdminServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         UserService us = new UserService();
-
+        
         String action = request.getParameter("action");
 
         if (action != null && action.equals("view")) {
@@ -64,10 +70,15 @@ public class AdminServlet extends HttpServlet {
         List<User> users = null;
 
         try {
-
+            
+            HttpSession session = ((HttpServletRequest) request).getSession();
+            User user = us.get((String) session.getAttribute("username")); //current user
+            ArrayList<Note> publicNotes = NoteService.getPublicNotes(user);
+            request.setAttribute("publicNotes", publicNotes);
+            
             users = us.getAll();
 
-        } catch (UserDBException ex) {
+        } catch (Exception ex) {
 
             ex.printStackTrace();
             throw new ServletException();
@@ -123,7 +134,6 @@ public class AdminServlet extends HttpServlet {
 
                             ex.printStackTrace();
                             throw new ServletException();
-
                         }
                     }
 
@@ -216,9 +226,14 @@ public class AdminServlet extends HttpServlet {
 
         try {
 
-            users = us.getAll();
+            users = us.getAll(); 
+            
+            
+            User user = us.get((String) session.getAttribute("username")); 
+            ArrayList<Note> publicNotes = NoteService.getPublicNotes(user);
+            request.setAttribute("publicNotes", publicNotes);
 
-        } catch (UserDBException ex) {
+        } catch (Exception ex) {
 
             ex.printStackTrace();
             throw new ServletException();
