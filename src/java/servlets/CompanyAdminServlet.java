@@ -55,7 +55,7 @@ public class CompanyAdminServlet extends HttpServlet {
                     }
                     request.setAttribute("message", "Edit User Below");
                 } else {
-                    request.setAttribute("message", "Whoops. You can't Edit System Admins");
+                    request.setAttribute("message", "Whoops. You can't edit a System Admin!");
                 }
             } catch (UserDBException ex) {
                 ex.printStackTrace();
@@ -207,7 +207,11 @@ public class CompanyAdminServlet extends HttpServlet {
                 request.setAttribute("message", "Account Successfully Deleted!");
 
             } else if (action.equals("edit")) {
-                
+
+                if (password == "" || email == "" || firstname == "" || lastname == "") {
+                    throw new IOException();
+                }
+
                 boolean unique = AccountService.isUnique(email);
 
                 User seluser = us.get(username);
@@ -218,7 +222,6 @@ public class CompanyAdminServlet extends HttpServlet {
                     }
                 }
 
-
                 String roleIDSTR = request.getParameter("selectRole");
                 int roleID = Integer.parseInt(roleIDSTR);
                 Role role = new Role(roleID);
@@ -228,7 +231,11 @@ public class CompanyAdminServlet extends HttpServlet {
                 request.setAttribute("message", "Account Successfully Updated!");
 
             } else if (action.equals("add")) {
-                
+
+                if (password == "" || email == "" || firstname == "" || lastname == "") {
+                    throw new IOException();
+                }
+
                 boolean unique = AccountService.isUnique(email);
 
                 if (unique == false) {
@@ -275,7 +282,7 @@ public class CompanyAdminServlet extends HttpServlet {
         List<Role> roles = UserDB.getRoles();
         roles.remove(0);
         request.setAttribute("roles", roles);
-        
+
         request.setAttribute("users", mathcingUsers);
 
         getServletContext().getRequestDispatcher("/WEB-INF/admin/companyUsers.jsp").forward(request, response);

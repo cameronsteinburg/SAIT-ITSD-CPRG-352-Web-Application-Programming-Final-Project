@@ -100,7 +100,7 @@ public class AdminServlet extends HttpServlet {
 
                 String selectedUsername = request.getParameter("selectedUsername");
 
-                UserDB userdb = new UserDB();
+                //UserDB userdb = new UserDB();
 
                 String user = (String) session.getAttribute("username");
 
@@ -149,6 +149,10 @@ public class AdminServlet extends HttpServlet {
                 request.setAttribute("message", "Account Successfully Deleted!");
 
             } else if (action.equals("edit")) {
+                
+                if (password == "" || email == "" || firstname == "" || lastname == "") {
+                    throw new IOException();
+                }
 
                 boolean unique = AccountService.isUnique(email);
 
@@ -169,8 +173,11 @@ public class AdminServlet extends HttpServlet {
                 request.setAttribute("message", "Account Successfully Updated!");
 
             } else if (action.equals("add")) {
-
-                String message = "Whoops.  Could not perform that action.";
+                
+                if (password == "" || email == "" || firstname == "" || lastname == "") {
+                    throw new IOException();
+                }
+                
                 boolean unique = AccountService.isUnique(email);
 
                 if (unique == false) {

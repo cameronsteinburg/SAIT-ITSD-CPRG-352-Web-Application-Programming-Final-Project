@@ -75,7 +75,7 @@
     <c:if test="${selectedUser != null}">
         <h3>Edit User</h3>
         <form action="companyAdmin" method="POST">
-            username: <input type="text" name="username" value="${selectedUser.username}" readonly><br>
+            username: ${selectedUser.username} <input type="hidden" name="username" value="${selectedUser.username}" readonly><br>
             first name: <input type="text" name="firstname" value="${selectedUser.firstname}" maxlength="50"><br>
             last name: <input type="text" name="lastname" value="${selectedUser.lastname}" maxlength="50"><br>
             password: <input type="password" name="password" value="${selectedUser.password}" maxlength="30"><br>

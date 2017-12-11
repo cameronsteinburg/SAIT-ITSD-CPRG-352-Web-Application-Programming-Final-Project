@@ -93,7 +93,7 @@
 
         <form action="admin" method="POST">
 
-            username: <input type="text" maxlength="30" name="username" value="${selectedUser.username}" readonly><br>
+            username: ${selectedUser.username} <input type="hidden" maxlength="30" name="username" value="${selectedUser.username}" readonly><br>
             first name: <input type="text" maxlength="50" name="firstname" value="${selectedUser.firstname}"><br>
             last name: <input type="text" maxlength="50" name="lastname" value="${selectedUser.lastname}"><br>
             password: <input type="password" maxlength="30" name="password" maxlength="30" value="${selectedUser.password}"><br>

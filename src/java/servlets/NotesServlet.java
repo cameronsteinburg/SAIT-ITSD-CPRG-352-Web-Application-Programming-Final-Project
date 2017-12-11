@@ -102,10 +102,13 @@ public class NotesServlet extends HttpServlet {
             try {
 
                 User user = us.get(username);
+                
                 if (action.equals("delete")) {
 
                     int selectedNoteId = Integer.parseInt(request.getParameter("deleteselect"));
+                    
                     User curuser = (User) session.getAttribute("curuser");
+                    
                     NoteDB ndb = new NoteDB();
                     Note gotnote = ndb.getNote(selectedNoteId);
 
@@ -184,7 +187,9 @@ public class NotesServlet extends HttpServlet {
         } catch (NotesDBException ex) {
 
             ex.printStackTrace();
+            request.setAttribute("message", "Whoops.  Could not perform that action.");
             throw new ServletException();
+            
         }
     }
 }

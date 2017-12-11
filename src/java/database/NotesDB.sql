@@ -36,7 +36,7 @@ CREATE TABLE `note` (
   `DateCreated` datetime NOT NULL,
   `Title` varchar(30) NOT NULL,
   `Contents` varchar(20000) CHARACTER SET utf8 NOT NULL,
-  `Owner` varchar(10) NOT NULL,
+  `Owner` varchar(50) NOT NULL,
   PRIMARY KEY (`NoteID`),
   KEY `FK_Note_User` (`Owner`),
   CONSTRAINT `FK_Note_User` FOREIGN KEY (`Owner`) REFERENCES `user` (`Username`) ON DELETE CASCADE ON UPDATE CASCADE

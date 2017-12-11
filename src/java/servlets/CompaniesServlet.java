@@ -101,8 +101,13 @@ public class CompaniesServlet extends HttpServlet {
         int newID = currentCompanies.size() + 1;
 
         try {
+            
+            if(newName == ""){
+                throw new IOException();
+            }
 
             if (action.equals("edit")) {
+                
                 int id = Integer.parseInt(request.getParameter("id"));
                 cs.update(newName, id);
                 request.setAttribute("message", "Company Successfully Updated!");

@@ -1,6 +1,8 @@
 package servlets;
 
+import businesslogic.AccountService;
 import businesslogic.UserService;
+import dataaccess.DuplicateEmailException;
 import dataaccess.UserDBException;
 import domainmodel.User;
 import java.io.IOException;
@@ -35,7 +37,7 @@ public class AccountServlet extends HttpServlet {
             }
 
         } catch (UserDBException ex) {
-            
+
             ex.printStackTrace();
             throw new ServletException();
         }
@@ -54,20 +56,49 @@ public class AccountServlet extends HttpServlet {
 
         HttpSession session = request.getSession();
         UserService us = new UserService();
+
         String selectedUsername = (String) session.getAttribute("username");
 
         try {
 
+            if (password == "" || email == "" || firstname == "" || lastname == "") {
+                throw new IOException();
+            }
+
+            boolean unique = AccountService.isUnique(email);
+
+            User seluser = us.get(selectedUsername);
+
+            if (!email.equals(seluser.getEmail())) {
+                if (unique == false) {
+                    throw new DuplicateEmailException();
+                }
+            }
+
             User user = us.get(selectedUsername);
             us.update(selectedUsername, password, email, active, firstname, lastname, user.getCompany());
 
-        } catch (UserDBException ex) {
-                
+            User wutuser = us.get(selectedUsername);
+
+            if (wutuser.getActive() == false) {
+
+                response.sendRedirect("login?logout");
+
+            } else if (wutuser.getActive() == true) {
+
+                request.setAttribute("selectedUser", wutuser);
+                request.setAttribute("themessage", "Account Succesfully Updated!");
+                getServletContext().getRequestDispatcher("/WEB-INF/account/account.jsp").forward(request, response);
+            }
+
+        } catch (Exception ex) {
+
             ex.printStackTrace();
-            throw new ServletException();
+            request.setAttribute("themessage", "Whoops.  Could not perform that action.");
+
         }
 
-        try {
+        try { //reload
 
             User user = us.get(selectedUsername);
 
@@ -78,13 +109,12 @@ public class AccountServlet extends HttpServlet {
             } else if (user.getActive() == true) {
 
                 request.setAttribute("selectedUser", user);
-                request.setAttribute("themessage", "Account Succesfully Updated!");
                 getServletContext().getRequestDispatcher("/WEB-INF/account/account.jsp").forward(request, response);
                 return;
             }
 
         } catch (UserDBException ex) {
-            
+
             ex.printStackTrace();
             throw new ServletException();
         }
