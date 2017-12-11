@@ -64,10 +64,17 @@ public class NotesServlet extends HttpServlet {
             }
 
             request.setAttribute("notess", acceptable);
+            
+            UserService us = new UserService();
+            User user = us.get((String) session.getAttribute("username")); //current user
+            ArrayList<Note> publicNotes = NoteService.getPublicNotes(user);
+            request.setAttribute("publicNotes", publicNotes);
+            
+            
             getServletContext().getRequestDispatcher("/WEB-INF/notes/notes.jsp").forward(request, response);
             return;
 
-        } catch (NotesDBException ex) {
+        } catch (Exception ex) {
 
             ex.printStackTrace();
             throw new ServletException();
@@ -180,11 +187,17 @@ public class NotesServlet extends HttpServlet {
             }
 
             request.setAttribute("notess", acceptable);
+            
+            
+
+            User user = us.get((String) session.getAttribute("username")); //current user
+            ArrayList<Note> publicNotes = NoteService.getPublicNotes(user);
+            request.setAttribute("publicNotes", publicNotes);
 
             getServletContext().getRequestDispatcher("/WEB-INF/notes/notes.jsp").forward(request, response);
             return;
 
-        } catch (NotesDBException ex) {
+        } catch (Exception ex) {
 
             ex.printStackTrace();
             request.setAttribute("message", "Whoops.  Could not perform that action.");

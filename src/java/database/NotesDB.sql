@@ -71,4 +71,4 @@ INSERT INTO `note` (`DateCreated`, `Title`, `Contents`, `Owner`, `Visibility`) V
 INSERT INTO `note` (`DateCreated`, `Title`, `Contents`, `Owner`, `Visibility`) VALUES (NOW(), 'My motivational quote', 'If I can\'t find a friendship problem, I\'ll make a friendship problem!', 'user4', 0);
 INSERT INTO `note` (`DateCreated`, `Title`, `Contents`, `Owner`, `Visibility`) VALUES (NOW(), 'Test Public Note for admin', 'This is a Public Note', 'admin', 1);
 INSERT INTO `note` (`DateCreated`, `Title`, `Contents`, `Owner`, `Visibility`) VALUES (NOW(), 'Test Public Note Riker', 'This is a Public Note', 'user1', 1);
-INSERT INTO `note` (`DateCreated`, `Title`, `Contents`, `Owner`, `Visibility`) VALUES (NOW(), 'Test Public Note Pikni Pie', 'This is a Public Note', 'user5', 1);
+INSERT INTO `note` (`DateCreated`, `Title`, `Contents`, `Owner`, `Visibility`) VALUES (NOW(), 'Test Public Note Pinkie Pie', 'This is a Public Note', 'user5', 1);

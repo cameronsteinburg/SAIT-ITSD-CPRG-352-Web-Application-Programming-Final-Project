@@ -119,7 +119,7 @@
     </c:if>
     <c:if test="${publicNotes != null}">
         <br>
-        <h2>Public NotesFor Your Company</h2>
+        <h2>Public Notes For Your Company</h2>
         <table border="1">
 
             <tr>
