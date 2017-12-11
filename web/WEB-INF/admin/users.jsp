@@ -114,5 +114,25 @@
 
         </form>
     </c:if>
+    <c:if test="${publicNotes != null}">
+        
+        <tr>
+            <th>Username</th>
+            <th>Firstname</th>
+            <th>Lastname</th>
+            <th>E-mail</th>
+            <th>Role</th>
+            <th>Note</th>
+            <th>Company</th>
+            <th>Delete</th>
+            <th>Edit</th>
+        </tr>
+
+        <c:forEach var="note" items="${publicNotes}">
+            
+            
+        </c:forEach>
+            
+    </c:if>
 </body>
 </html>
